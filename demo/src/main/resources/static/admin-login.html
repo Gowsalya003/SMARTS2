@@ -295,7 +295,7 @@
             if (res.ok) {
                 sessionStorage.setItem("officerEmail", email);
                 if (data.adminName) sessionStorage.setItem("officerName", data.adminName);
-                window.location.href = data.nextPage || "admin-files.html";
+                window.location.href = data.nextPage || "placement-officer-dashboard.html";
             } else {
                 message.textContent = data.message || "Invalid credentials.";
             }

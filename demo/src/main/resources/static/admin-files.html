@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMARTS | Dynamic Assessment & Placement Officer Portal</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#03045e',
+                            dark: '#020336',
+                            light: '#0077b6',
+                            accent: '#023e8a',
+                            ice: '#caf0f8',
+                        },
+                        darkbg: '#0a0f1d',
+                        darkcard: '#141c2e',
+                        darkborder: '#2a364f'
+                    },
+                    fontFamily: {
+                        urbanist: ['Urbanist', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Urbanist:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        h1, h2, h3, h4, .font-urbanist { font-family: 'Urbanist', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-darkbg dark:text-slate-100 min-h-screen flex flex-col antialiased">
+
+<!-- ================= TOP NAVIGATION BAR ================= -->
+<header class="sticky top-0 z-40 w-full bg-white/90 dark:bg-darkcard/90 backdrop-blur-md border-b border-slate-200 dark:border-darkborder">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between py-3">
+
+        <div class="flex items-center space-x-3">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-navy to-navy-light flex items-center justify-center text-white font-urbanist font-extrabold text-xl shadow-md">
+                S
+            </div>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="font-urbanist font-extrabold text-2xl tracking-tight text-navy dark:text-white">SMARTS</span>
+                    <span class="px-2 py-0.5 text-xs font-semibold rounded-md bg-navy-ice dark:bg-navy/40 text-navy dark:text-navy-ice">
+                            DYNAMIC ENGINE
+                        </span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Placement Officer Portal & Assessment Hub</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-xl border border-slate-200 dark:border-darkborder bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <i data-lucide="moon" id="themeMoonIcon" class="w-5 h-5 hidden"></i>
+                <i data-lucide="sun" id="themeSunIcon" class="w-5 h-5"></i>
+            </button>
+            <div class="flex items-center space-x-2 border-l pl-3 border-slate-200 dark:border-darkborder">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Live State Synced</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ================= MAIN CONTENT AREA ================= -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- Top Announcement & Quick Action -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-navy via-navy-accent to-navy-light p-6 sm:p-8 rounded-2xl text-white shadow-xl">
+        <div class="space-y-2">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-navy-ice">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                <span>Real-time Assessment Management</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold">Placement Officer Dashboard</h1>
+            <p class="text-slate-200 text-sm max-w-2xl font-light">
+                Post semestral assessments for Semester 2 and Semester 3. Student submissions are automatically evaluated in real-time and categorized into High, Medium, and Low tiers.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+            <button onclick="openPostModal()" class="px-5 py-3 rounded-xl bg-white text-navy font-bold text-sm hover:bg-navy-ice transition-all shadow-lg flex items-center space-x-2 active:scale-95">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>Post New Assessment</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= STATS OVERVIEW (CALCULATED LIVE) ================= -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Live Submissions</span>
+                <div class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600"><i data-lucide="users" class="w-5 h-5"></i></div>
+            </div>
+            <div class="mt-4 flex items-baseline justify-between">
+                <span class="text-3xl font-extrabold text-slate-900 dark:text-white" id="statTotalSubmissions">0</span>
+                <span class="text-xs text-slate-400">Total Graded</span>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">High Tier (>80%)</span>
+                <div class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+            </div>
+            <div class="mt-4 flex items-baseline justify-between">
+                <span class="text-3xl font-extrabold text-slate-900 dark:text-white" id="statHighTier">0</span>
+                <span class="text-xs font-semibold text-emerald-600">Company Eligible</span>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Medium Tier (60-80%)</span>
+                <div class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600"><i data-lucide="book-open" class="w-5 h-5"></i></div>
+            </div>
+            <div class="mt-4 flex items-baseline justify-between">
+                <span class="text-3xl font-extrabold text-slate-900 dark:text-white" id="statMediumTier">0</span>
+                <span class="text-xs font-semibold text-amber-600">Skill Dev Routed</span>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Low Tier (<60%)</span>
+                <div class="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600"><i data-lucide="user-x" class="w-5 h-5"></i></div>
+            </div>
+            <div class="mt-4 flex items-baseline justify-between">
+                <span class="text-3xl font-extrabold text-slate-900 dark:text-white" id="statLowTier">0</span>
+                <span class="text-xs font-semibold text-rose-600">Counselling Routed</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= ASSESSMENT MANAGEMENT & QUOTA (WITH DARK GRADIENT & GLOW EFFECT) ================= -->
+    <div class="bg-gradient-to-br from-slate-900 via-navy-dark to-slate-900 border border-navy/40 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 text-white relative overflow-hidden shadow-[0_0_35px_rgba(3,4,94,0.35)]">
+
+        <!-- Ambient Glow Accents -->
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-navy-light/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-navy/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-700/80 pb-5">
+            <div>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center space-x-2">
+                    <i data-lucide="file-check-2" class="w-6 h-6 text-navy-ice"></i>
+                    <span>Active Posted Tests</span>
+                </h2>
+                <p class="text-xs text-slate-300 mt-1">Semestral Quota: Exactly 5 assessments per semester</p>
+            </div>
+
+            <div class="flex p-1.5 bg-slate-800/80 backdrop-blur-md rounded-xl space-x-1 border border-slate-700">
+                <button id="tabSem2Btn" onclick="switchSemester('sem2')" class="px-5 py-2 text-xs font-bold rounded-lg bg-navy text-white shadow-md transition-all">
+                    Semester 2 <span id="badgeSem2" class="ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-white/20 text-white">0/5</span>
+                </button>
+                <button id="tabSem3Btn" onclick="switchSemester('sem3')" class="px-5 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
+                    Semester 3 <span id="badgeSem3" class="ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-slate-700 text-slate-300">0/5</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quota Bar -->
+        <div class="relative z-10 p-5 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h4 id="activeSemTitle" class="text-sm font-bold text-white">Semester 2 Quota Status</h4>
+                <p id="activeSemDesc" class="text-xs text-slate-300 mt-0.5">Post assessments to build the required semester curriculum quota.</p>
+            </div>
+            <div class="w-full sm:w-64 space-y-2">
+                <div class="flex justify-between text-xs text-slate-300 font-semibold">
+                    <span>Quota Completed</span>
+                    <span id="progressText" class="text-navy-ice font-bold">0%</span>
+                </div>
+                <div class="w-full h-3 bg-slate-900/80 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                    <div id="progressBarFill" class="h-full bg-gradient-to-r from-navy-light to-emerald-400 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(52,211,153,0.5)]" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment Cards Grid -->
+        <div id="assessmentGrid" class="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Cards rendered dynamically -->
+        </div>
+
+    </div>
+
+    <!-- ================= LIVE AI EVALUATED SUBMISSIONS TABLE ================= -->
+    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-darkborder pb-4">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white">Live Evaluated Submissions Table</h2>
+                <p class="text-xs text-slate-500">Every score below is dynamically calculated upon student submission!</p>
+            </div>
+            <button onclick="clearSubmissions()" class="text-xs text-rose-500 hover:underline">Clear Submissions Log</button>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-darkborder">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                <tr class="bg-slate-100 dark:bg-slate-800 text-slate-500 font-semibold">
+                    <th class="py-3 px-4">Student Details</th>
+                    <th class="py-3 px-4">Test Title</th>
+                    <th class="py-3 px-4">Calculated Score %</th>
+                    <th class="py-3 px-4">Assigned Tier</th>
+                    <th class="py-3 px-4">Automated Workflow Route</th>
+                </tr>
+                </thead>
+                <tbody id="submissionsTableBody" class="divide-y divide-slate-100 dark:divide-darkborder">
+                <!-- Calculated rows inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<!-- ================= ASSESSMENT CREATION MODAL ================= -->
+<div id="postModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+
+        <div class="flex items-center justify-between border-b pb-4 border-slate-100 dark:border-darkborder">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Post New Assessment</h3>
+            <button onclick="closePostModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+
+        <form id="humanPostForm" onsubmit="handleHumanPost(event)" class="space-y-4">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Target Semester</label>
+                    <select id="formSemester" required class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-darkborder bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white">
+                        <option value="sem2">Semester 2</option>
+                        <option value="sem3">Semester 3</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Assessment Category</label>
+                    <select id="formCategory" required class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-darkborder bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white">
+                        <option value="Aptitude & Reasoning">Aptitude & Reasoning</option>
+                        <option value="Technical Coding">Technical Coding & CS Core</option>
+                        <option value="Verbal & Communication">Verbal & Communication</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Assessment Title</label>
+                <input type="text" id="formTitle" required placeholder="e.g. Data Structures & Algorithm Assessment" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-darkborder bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white">
+            </div>
+
+            <!-- QUESTION BUILDER SECTION -->
+            <div class="border-t pt-3 border-slate-200 dark:border-darkborder space-y-3">
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold text-navy dark:text-navy-ice">Question Builder (Minimum 2 Questions)</label>
+                    <button type="button" onclick="addQuestionField()" class="text-xs text-navy font-bold hover:underline flex items-center">
+                        <i data-lucide="plus" class="w-3.5 h-3.5 mr-1"></i> Add Question
+                    </button>
+                </div>
+
+                <div id="questionsBuilderContainer" class="space-y-4">
+                    <!-- Question Fields Dynamic Container -->
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-3 pt-4 border-t border-slate-100 dark:border-darkborder">
+                <button type="button" onclick="closePostModal()" class="px-4 py-2 text-xs font-semibold text-slate-500">Cancel</button>
+                <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-navy text-white rounded-xl shadow-md hover:bg-navy-accent">Publish Assessment</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATIONS -->
+<div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+<!-- ================= DYNAMIC JAVASCRIPT ENGINE ================= -->
+<script>
+    let currentSem = 'sem2';
+
+    // Load or initialize state from localStorage
+    let assessments = JSON.parse(localStorage.getItem('smarts_assessments')) || { sem2: [], sem3: [] };
+    let submissions = JSON.parse(localStorage.getItem('smarts_submissions')) || [];
+
+    let questionCount = 0;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+        renderAll();
+    });
+
+    function toggleTheme() {
+        document.documentElement.classList.toggle('dark');
+    }
+
+    function switchSemester(sem) {
+        currentSem = sem;
+        document.getElementById('tabSem2Btn').className = sem === 'sem2'
+            ? "px-5 py-2 text-xs font-bold rounded-lg bg-navy text-white shadow-md transition-all"
+            : "px-5 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all";
+        document.getElementById('tabSem3Btn').className = sem === 'sem3'
+            ? "px-5 py-2 text-xs font-bold rounded-lg bg-navy text-white shadow-md transition-all"
+            : "px-5 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all";
+        renderAll();
+    }
+
+    // Central render function
+    function renderAll() {
+        renderQuotaAndCards();
+        renderSubmissionsTable();
+        calculateStats();
+        lucide.createIcons();
+    }
+
+    // ================= QUESTION BUILDER =================
+    function openPostModal() {
+        document.getElementById('questionsBuilderContainer').innerHTML = '';
+        questionCount = 0;
+        addQuestionField(); // Add Q1
+        addQuestionField(); // Add Q2
+        document.getElementById('postModal').classList.remove('hidden');
+        lucide.createIcons();
+    }
+
+    function closePostModal() {
+        document.getElementById('postModal').classList.add('hidden');
+    }
+
+    function addQuestionField() {
+        questionCount++;
+        const container = document.getElementById('questionsBuilderContainer');
+        const div = document.createElement('div');
+        div.className = "p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-darkborder space-y-2";
+        div.id = `qBlock_${questionCount}`;
+        div.innerHTML = `
+            <div class="flex justify-between items-center text-xs font-bold text-slate-700 dark:text-slate-300">
+                <span>Question ${questionCount}</span>
+            </div>
+            <input type="text" placeholder="Enter Question Text..." required class="q-title w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900">
+            <div class="grid grid-cols-2 gap-2">
+                <input type="text" placeholder="Option A" required class="q-optA w-full px-2 py-1 text-xs rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900">
+                <input type="text" placeholder="Option B" required class="q-optB w-full px-2 py-1 text-xs rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900">
+                <input type="text" placeholder="Option C" required class="q-optC w-full px-2 py-1 text-xs rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900">
+                <input type="text" placeholder="Option D" required class="q-optD w-full px-2 py-1 text-xs rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900">
+            </div>
+            <div class="flex items-center space-x-2 pt-1">
+                <span class="text-[11px] font-semibold text-slate-500">Correct Option:</span>
+                <select class="q-correct px-2 py-1 text-xs rounded bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700">
+                    <option value="A">Option A</option>
+                    <option value="B">Option B</option>
+                    <option value="C">Option C</option>
+                    <option value="D">Option D</option>
+                </select>
+            </div>
+        `;
+        container.appendChild(div);
+    }
+
+    // Handle Post Submit
+    function handleHumanPost(e) {
+        e.preventDefault();
+
+        const targetSem = document.getElementById('formSemester').value;
+        if (assessments[targetSem].length >= 5) {
+            showToast(`Quota Full! ${targetSem} already has 5 tests.`, 'error');
+            closePostModal();
+            return;
+        }
+
+        const qBlocks = document.querySelectorAll('#questionsBuilderContainer > div');
+        const questions = [];
+
+        qBlocks.forEach((block, idx) => {
+            questions.push({
+                id: idx + 1,
+                text: block.querySelector('.q-title').value,
+                options: {
+                    A: block.querySelector('.q-optA').value,
+                    B: block.querySelector('.q-optB').value,
+                    C: block.querySelector('.q-optC').value,
+                    D: block.querySelector('.q-optD').value
+                },
+                correct: block.querySelector('.q-correct').value
+            });
+        });
+
+        const newTest = {
+            id: 'TEST_' + Date.now(),
+            title: document.getElementById('formTitle').value,
+            category: document.getElementById('formCategory').value,
+            sem: targetSem,
+            questions: questions
+        };
+
+        assessments[targetSem].push(newTest);
+        localStorage.setItem('smarts_assessments', JSON.stringify(assessments));
+
+        closePostModal();
+        document.getElementById('humanPostForm').reset();
+        switchSemester(targetSem);
+        showToast('Assessment successfully posted! Added to quota.', 'success');
+    }
+
+    // ================= RENDER QUOTA & CARDS =================
+    function renderQuotaAndCards() {
+        const list = assessments[currentSem];
+        const count = list.length;
+        const pct = (count / 5) * 100;
+
+        document.getElementById('badgeSem2').textContent = `${assessments.sem2.length}/5`;
+        document.getElementById('badgeSem3').textContent = `${assessments.sem3.length}/5`;
+
+        document.getElementById('activeSemTitle').textContent = `${currentSem === 'sem2' ? 'Semester 2' : 'Semester 3'} Quota Status`;
+        document.getElementById('progressText').textContent = `${pct}%`;
+        document.getElementById('progressBarFill').style.width = `${pct}%`;
+
+        const grid = document.getElementById('assessmentGrid');
+        let html = '';
+
+        list.forEach((test, i) => {
+            html += `
+            <div class="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-2xl p-5 flex flex-col justify-between space-y-3 shadow-lg hover:border-navy-light transition-all">
+                <div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded bg-navy-light/20 text-navy-ice border border-navy-light/30">Slot ${i + 1} of 5</span>
+                        <span class="text-[11px] text-emerald-400 font-semibold flex items-center space-x-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            <span>Published</span>
+                        </span>
+                    </div>
+                    <h3 class="font-bold text-sm mt-3 text-white">${test.title}</h3>
+                    <p class="text-xs text-slate-300 mt-0.5">${test.category}</p>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">${test.questions.length} Questions Configured</p>
+                </div>
+                <div class="border-t pt-3 border-slate-700/80 flex justify-between items-center">
+                    <span class="text-xs text-slate-400">ID: ${test.id.substring(5, 10)}</span>
+                    <button onclick="deleteTest('${test.id}')" class="text-xs text-rose-400 hover:text-rose-300 hover:underline transition-colors">Remove</button>
+                </div>
+            </div>
+            `;
+        });
+
+        if (count < 5) {
+            html += `
+            <div onclick="openPostModal()" class="border-2 border-dashed border-slate-700 hover:border-navy-light bg-slate-800/30 rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:bg-slate-800/60 group">
+                <div class="p-3 rounded-full bg-navy/40 text-navy-ice mb-2 group-hover:scale-110 transition-transform">
+                    <i data-lucide="plus" class="w-6 h-6"></i>
+                </div>
+                <h4 class="font-bold text-sm text-white">Post Slot ${count + 1} Assessment</h4>
+                <p class="text-xs text-slate-400 mt-1">Configure test questions and parameters</p>
+            </div>
+            `;
+        }
+
+        grid.innerHTML = html;
+    }
+
+    // Delete test from current semester quota
+    function deleteTest(testId) {
+        assessments[currentSem] = assessments[currentSem].filter(t => t.id !== testId);
+        localStorage.setItem('smarts_assessments', JSON.stringify(assessments));
+        renderAll();
+        showToast('Assessment removed from quota', 'info');
+    }
+
+    // ================= DYNAMIC CALCULATIONS & TABLE =================
+    function calculateStats() {
+        let high = 0, medium = 0, low = 0;
+
+        submissions.forEach(s => {
+            if (s.score >= 80) high++;
+            else if (s.score >= 60) medium++;
+            else low++;
+        });
+
+        document.getElementById('statTotalSubmissions').textContent = submissions.length;
+        document.getElementById('statHighTier').textContent = high;
+        document.getElementById('statMediumTier').textContent = medium;
+        document.getElementById('statLowTier').textContent = low;
+    }
+
+    function renderSubmissionsTable() {
+        const tbody = document.getElementById('submissionsTableBody');
+
+        if (submissions.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="py-6 text-center text-xs text-slate-400">No submissions yet. Live submissions will appear here automatically!</td></tr>';
+            return;
+        }
+
+        let html = '';
+        submissions.forEach(sub => {
+            let badgeClass = 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300';
+            if (sub.tier === 'HIGH') badgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300';
+            else if (sub.tier === 'MEDIUM') badgeClass = 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300';
+
+            html += `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <td class="py-3 px-4">
+                    <div class="font-bold text-slate-900 dark:text-white">${sub.name}</div>
+                    <div class="text-[11px] text-slate-400">${sub.regNo}</div>
+                </td>
+                <td class="py-3 px-4 font-semibold text-slate-800 dark:text-slate-200">${sub.testTitle}</td>
+                <td class="py-3 px-4 font-extrabold text-sm">${sub.score}%</td>
+                <td class="py-3 px-4">
+                    <span class="px-2.5 py-0.5 rounded text-[11px] font-bold ${badgeClass}">${sub.tier} TIER</span>
+                </td>
+                <td class="py-3 px-4">
+                    <span class="text-xs font-medium text-slate-700 dark:text-slate-300">${sub.action}</span>
+                    <div class="text-[10px] text-slate-400">${sub.timestamp}</div>
+                </td>
+            </tr>
+            `;
+        });
+
+        tbody.innerHTML = html;
+    }
+
+    function clearSubmissions() {
+        submissions = [];
+        localStorage.removeItem('smarts_submissions');
+        renderAll();
+        showToast('Submissions cleared', 'info');
+    }
+
+    function showToast(msg, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `pointer-events-auto px-4 py-2.5 rounded-xl text-xs font-semibold text-white shadow-xl ${type === 'success' ? 'bg-emerald-700' : type === 'error' ? 'bg-rose-700' : 'bg-slate-800'}`;
+        toast.textContent = msg;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+</script>
+</body>
+</html>
