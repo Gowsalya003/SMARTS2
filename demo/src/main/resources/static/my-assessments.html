@@ -1,0 +1,1469 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Assessments | SMARTS</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Manrope", sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #0f1b3d;
+        }
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: fixed;
+            top: 0;
+            left: 245px;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #0f1b3d;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .search {
+            width: 240px;
+            padding: 11px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .company {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #0f1b3d;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .sidebar-logo {
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            padding-left: 12px;
+        }
+
+        .sidebar-role {
+            font-size: 12px;
+            color: #aeb8d0;
+            padding-left: 12px;
+            margin-bottom: 35px;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px 14px;
+            margin-bottom: 7px;
+            border-radius: 10px;
+            color: #d9deeb;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #162653;
+            color: white;
+        }
+
+        .nav-item.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 18px;
+            right: 18px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 245px;
+            padding: 105px 35px 40px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* =========================
+           ASSESSMENT GRID
+        ========================= */
+
+        .assessment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 22px;
+        }
+
+        .assessment-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 15px rgba(15, 27, 61, 0.05);
+        }
+
+        .assessment-card h2 {
+            font-size: 19px;
+            margin-bottom: 9px;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 45px;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 6px 11px;
+            border-radius: 20px;
+            background: #e8f0ff;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .detail {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .detail span {
+            display: block;
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .detail strong {
+            font-size: 14px;
+        }
+
+        .submission-count {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .view-btn {
+            width: 100%;
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 13px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .view-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* =========================
+           EMPTY / LOADING
+        ========================= */
+
+        .message {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 15px;
+            color: #64748b;
+        }
+
+        /* =========================
+           SUBMISSIONS SECTION
+        ========================= */
+
+        .submissions-section {
+            display: none;
+            margin-top: 35px;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 15px rgba(15, 27, 61, 0.05);
+        }
+
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .submission-header h2 {
+            font-size: 21px;
+        }
+
+        .close-btn {
+            border: 1px solid #d1d5db;
+            background: white;
+            padding: 9px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 14px;
+            font-size: 13px;
+            color: #475569;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #eef0f4;
+            font-size: 14px;
+        }
+
+        .score {
+            font-weight: 800;
+            color: #2563eb;
+        }
+
+        .percentage {
+            font-weight: 700;
+        }
+
+        .published {
+            color: #16a34a;
+            font-weight: 700;
+        }
+
+        .not-published {
+            color: #ea580c;
+            font-weight: 700;
+        }
+
+        /* =========================
+           PUBLISH BUTTON
+        ========================= */
+
+        .publish-container {
+            margin-top: 22px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .publish-btn {
+            border: none;
+            background: #16a34a;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .publish-btn:hover {
+            background: #15803d;
+        }
+
+        .publish-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 78px;
+            }
+
+            .sidebar-logo,
+            .sidebar-role,
+            .nav-item span {
+                display: none;
+            }
+
+            .topbar {
+                left: 78px;
+            }
+
+            .main {
+                margin-left: 78px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<div class="sidebar">
+
+    <div class="sidebar-logo">
+        SMARTS
+    </div>
+
+    <div class="sidebar-role">
+        EMPLOYER
+    </div>
+
+
+    <a href="employer-dashboard.html"
+       class="nav-item">
+
+        <span>▣</span>
+        <span>Dashboard</span>
+
+    </a>
+
+
+    <a href="post-assessment.html"
+       class="nav-item">
+
+        <span>＋</span>
+        <span>Post Assessment</span>
+
+    </a>
+
+
+    <a href="my-assessments.html"
+       class="nav-item active">
+
+        <span>▤</span>
+        <span>My Assessments</span>
+
+    </a>
+
+
+    <a href="#"
+       class="nav-item">
+
+        <span>◉</span>
+        <span>Candidates</span>
+
+    </a>
+
+
+    <div class="nav-item logout"
+         onclick="logout()">
+
+        <span>↪</span>
+        <span>Logout</span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TOPBAR
+========================= -->
+
+<div class="topbar">
+
+    <div class="logo">
+        My Assessments
+    </div>
+
+    <div class="top-right">
+
+        <input
+                type="text"
+                class="search"
+                placeholder="Search..."
+                oninput="searchAssessments(this.value)"
+        >
+
+        <div class="company"
+             id="companyName">
+
+            Company ▼
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="main">
+
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Manage Assessments</h1>
+
+            <p>
+                View your assessments and student submissions.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ASSESSMENTS -->
+
+    <div id="assessmentContainer"
+         class="assessment-grid">
+
+        <div class="message">
+            Loading assessments...
+        </div>
+
+    </div>
+
+
+    <!-- SUBMISSIONS -->
+
+    <div id="submissionsSection"
+         class="submissions-section">
+
+        <div class="submission-header">
+
+            <div>
+
+                <h2 id="submissionTitle">
+                    Student Submissions
+                </h2>
+
+            </div>
+
+            <button
+                    class="close-btn"
+                    onclick="closeSubmissions()">
+
+                Close
+
+            </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>Student Name</th>
+
+                    <th>Register Number</th>
+
+                    <th>Score</th>
+
+                    <th>Percentage</th>
+
+                    <th>Submitted At</th>
+
+                    <th>Score Status</th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody id="submissionBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="publish-container">
+
+            <button
+                    id="publishButton"
+                    class="publish-btn"
+                    onclick="publishScores()">
+
+                Publish Scores
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    const API = "http://localhost:8080/api/assessments";
+
+    let assessments = [];
+
+    let selectedAssessmentId = null;
+
+
+    // =========================================
+    // LOAD EMPLOYER
+    // =========================================
+
+    const employerId =
+        sessionStorage.getItem("employerId");
+
+    const companyName =
+        sessionStorage.getItem("companyName");
+
+
+    if (companyName) {
+
+        document.getElementById("companyName").textContent =
+            companyName + " ▼";
+
+    }
+
+
+    // =========================================
+    // CHECK LOGIN
+    // =========================================
+
+    if (!employerId) {
+
+        alert("Employer session not found.");
+
+        window.location.href =
+            "employer-login.html";
+
+    }
+
+
+    // =========================================
+    // LOAD ASSESSMENTS
+    // =========================================
+
+    async function loadAssessments() {
+
+        const container =
+            document.getElementById(
+                "assessmentContainer"
+            );
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API}/employer/${encodeURIComponent(employerId)}`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load assessments"
+                );
+
+            }
+
+
+            assessments =
+                await response.json();
+
+
+            renderAssessments(
+                assessments
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            container.innerHTML = `
+
+                <div class="message">
+
+                    Failed to load assessments.
+
+                    <br><br>
+
+                    Make sure Spring Boot is running.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    // =========================================
+    // DISPLAY ASSESSMENTS
+    // =========================================
+
+    function renderAssessments(list) {
+
+        const container =
+            document.getElementById(
+                "assessmentContainer"
+            );
+
+
+        if (!list || list.length === 0) {
+
+            container.innerHTML = `
+
+                <div class="message">
+
+                    No assessments found.
+
+                    <br><br>
+
+                    Create your first assessment.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        list.forEach(assessment => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "assessment-card";
+
+
+            card.innerHTML = `
+
+                <h2>
+                    ${escapeHtml(
+                        assessment.title
+                    )}
+                </h2>
+
+                <p class="description">
+                    ${escapeHtml(
+                        assessment.description || ""
+                    )}
+                </p>
+
+                <span class="badge">
+                    ${escapeHtml(
+                        assessment.category || "Assessment"
+                    )}
+                </span>
+
+
+                <div class="details">
+
+                    <div class="detail">
+
+                        <span>
+                            Questions
+                        </span>
+
+                        <strong>
+                            ${assessment.questionCount || 0}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            Total Marks
+                        </span>
+
+                        <strong>
+                            ${assessment.totalMarks || 0}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            Duration
+                        </span>
+
+                        <strong>
+                            ${assessment.duration || 0} mins
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <strong>
+                            ${assessment.status || "Published"}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="submission-count">
+
+                    Student submissions:
+                    <span id="count-${assessment.id}">
+                        Loading...
+                    </span>
+
+                </div>
+
+
+                <button
+                        class="view-btn"
+                        onclick="viewSubmissions(${assessment.id}, '${escapeHtml(assessment.title)}')">
+
+                    View Submissions
+
+                </button>
+
+            `;
+
+
+            container.appendChild(card);
+
+
+            loadSubmissionCount(
+                assessment.id
+            );
+
+        });
+
+    }
+
+
+    // =========================================
+    // LOAD SUBMISSION COUNT
+    // =========================================
+
+    async function loadSubmissionCount(
+        assessmentId
+    ) {
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API}/${assessmentId}/submissions`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Could not load submissions"
+                );
+
+            }
+
+
+            const submissions =
+                await response.json();
+
+
+            const element =
+                document.getElementById(
+                    `count-${assessmentId}`
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    submissions.length;
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            const element =
+                document.getElementById(
+                    `count-${assessmentId}`
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    "0";
+
+            }
+
+        }
+
+    }
+
+
+    // =========================================
+    // VIEW SUBMISSIONS
+    // =========================================
+
+    async function viewSubmissions(
+        assessmentId,
+        title
+    ) {
+
+        selectedAssessmentId =
+            assessmentId;
+
+
+        const section =
+            document.getElementById(
+                "submissionsSection"
+            );
+
+
+        const body =
+            document.getElementById(
+                "submissionBody"
+            );
+
+
+        document.getElementById(
+            "submissionTitle"
+        ).textContent =
+            title + " - Student Submissions";
+
+
+        section.style.display =
+            "block";
+
+
+        body.innerHTML = `
+
+            <tr>
+
+                <td colspan="6"
+                    style="text-align:center;padding:30px">
+
+                    Loading submissions...
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        section.scrollIntoView({
+            behavior: "smooth"
+        });
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API}/${assessmentId}/submissions`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load submissions"
+                );
+
+            }
+
+
+            const submissions =
+                await response.json();
+
+
+            if (!submissions ||
+                submissions.length === 0) {
+
+                body.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="6"
+                            style="text-align:center;padding:30px">
+
+                            No students have submitted
+                            this assessment yet.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+
+                document.getElementById(
+                    "publishButton"
+                ).disabled = true;
+
+
+                return;
+
+            }
+
+
+            body.innerHTML = "";
+
+
+            let allPublished = true;
+
+
+            submissions.forEach(
+                submission => {
+
+                    const published =
+                        submission.scorePublished === true;
+
+
+                    if (!published) {
+
+                        allPublished = false;
+
+                    }
+
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            <strong>
+                                ${escapeHtml(
+                                    submission.studentName || "Unknown"
+                                )}
+                            </strong>
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(
+                                submission.studentRegisterNumber || "-"
+                            )}
+                        </td>
+
+
+                        <td class="score">
+
+                            ${submission.score ?? 0}
+                            /
+                            ${submission.totalMarks ?? 0}
+
+                        </td>
+
+
+                        <td class="percentage">
+
+                            ${submission.percentage ?? 0}%
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatDate(
+                                submission.submittedAt
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                published
+
+                                ?
+
+                                `<span class="published">
+                                    Published
+                                </span>`
+
+                                :
+
+                                `<span class="not-published">
+                                    Not Published
+                                </span>`
+                            }
+
+                        </td>
+
+                    `;
+
+
+                    body.appendChild(row);
+
+                }
+            );
+
+
+            const publishButton =
+                document.getElementById(
+                    "publishButton"
+                );
+
+
+            publishButton.disabled =
+                allPublished;
+
+
+            if (allPublished) {
+
+                publishButton.textContent =
+                    "Scores Already Published";
+
+            } else {
+
+                publishButton.textContent =
+                    "Publish Scores";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td colspan="6"
+                        style="text-align:center;padding:30px">
+
+                        Failed to load submissions.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+    }
+
+
+    // =========================================
+    // PUBLISH SCORES
+    // =========================================
+
+    async function publishScores() {
+
+        if (!selectedAssessmentId) {
+
+            alert(
+                "Please select an assessment first."
+            );
+
+            return;
+
+        }
+
+
+        const confirmation =
+            confirm(
+                "Are you sure you want to publish scores? Students will be able to see their scores."
+            );
+
+
+        if (!confirmation) {
+
+            return;
+
+        }
+
+
+        const button =
+            document.getElementById(
+                "publishButton"
+            );
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Publishing...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API}/${selectedAssessmentId}/publish-scores`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "Failed to publish scores"
+                );
+
+            }
+
+
+            alert(
+                data.message ||
+                "Scores published successfully."
+            );
+
+
+            await viewSubmissions(
+                selectedAssessmentId,
+                document.getElementById(
+                    "submissionTitle"
+                ).textContent
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                error.message ||
+                "Failed to publish scores."
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "Publish Scores";
+
+        }
+
+    }
+
+
+    // =========================================
+    // CLOSE SUBMISSIONS
+    // =========================================
+
+    function closeSubmissions() {
+
+        document.getElementById(
+            "submissionsSection"
+        ).style.display =
+            "none";
+
+        selectedAssessmentId =
+            null;
+
+    }
+
+
+    // =========================================
+    // SEARCH
+    // =========================================
+
+    function searchAssessments(
+        searchText
+    ) {
+
+        const value =
+            searchText
+                .toLowerCase()
+                .trim();
+
+
+        if (!value) {
+
+            renderAssessments(
+                assessments
+            );
+
+            return;
+
+        }
+
+
+        const filtered =
+            assessments.filter(
+                assessment =>
+
+                    (assessment.title || "")
+                        .toLowerCase()
+                        .includes(value)
+
+                    ||
+
+                    (assessment.category || "")
+                        .toLowerCase()
+                        .includes(value)
+
+                    ||
+
+                    (assessment.description || "")
+                        .toLowerCase()
+                        .includes(value)
+
+            );
+
+
+        renderAssessments(
+            filtered
+        );
+
+    }
+
+
+    // =========================================
+    // FORMAT DATE
+    // =========================================
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
+
+            return "-";
+
+        }
+
+
+        try {
+
+            const date =
+                new Date(value);
+
+
+            if (isNaN(date.getTime())) {
+
+                return value;
+
+            }
+
+
+            return date.toLocaleString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+        } catch (e) {
+
+            return value;
+
+        }
+
+    }
+
+
+    // =========================================
+    // HTML ESCAPE
+    // =========================================
+
+    function escapeHtml(
+        value
+    ) {
+
+        if (value === null ||
+            value === undefined) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // =========================================
+    // LOGOUT
+    // =========================================
+
+    function logout() {
+
+        sessionStorage.removeItem(
+            "employerId"
+        );
+
+        sessionStorage.removeItem(
+            "companyName"
+        );
+
+
+        window.location.href =
+            "employer-login.html";
+
+    }
+
+
+    // =========================================
+    // START
+    // =========================================
+
+    loadAssessments();
+
+</script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Results | SMARTS</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .topbar {
+            height: 70px;
+
+            background: #0f1b3d;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 35px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .student-name {
+            font-size: 15px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+
+            margin: 35px auto;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #0f1b3d;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+        .results-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(300px, 1fr));
+
+            gap: 20px;
+        }
+
+        .result-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 20px rgba(15, 27, 61, 0.08);
+        }
+
+        .result-card h2 {
+            color: #0f1b3d;
+
+            font-size: 20px;
+
+            margin-bottom: 8px;
+        }
+
+        .company {
+            color: #6b7280;
+
+            font-size: 14px;
+
+            margin-bottom: 18px;
+        }
+
+        .pending-box {
+            background: #fff7ed;
+
+            border: 1px solid #fed7aa;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            text-align: center;
+        }
+
+        .pending-icon {
+            font-size: 35px;
+
+            margin-bottom: 8px;
+        }
+
+        .pending-title {
+            color: #c2410c;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+        }
+
+        .pending-text {
+            color: #9a3412;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+        .score-box {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background: #eff6ff;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            margin-top: 15px;
+        }
+
+        .score {
+            font-size: 30px;
+
+            font-weight: 800;
+
+            color: #2563eb;
+        }
+
+        .percentage {
+            font-size: 25px;
+
+            font-weight: 800;
+
+            color: #16a34a;
+        }
+
+        .submitted {
+            color: #6b7280;
+
+            font-size: 13px;
+
+            margin-top: 15px;
+        }
+
+        .loading {
+            text-align: center;
+
+            padding: 50px;
+
+            color: #6b7280;
+        }
+
+        .empty {
+            background: white;
+
+            padding: 50px;
+
+            text-align: center;
+
+            border-radius: 15px;
+
+            color: #6b7280;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+
+    <div class="logo">
+        SMARTS
+    </div>
+
+    <div
+            class="student-name"
+            id="studentName">
+        Student
+    </div>
+
+</div>
+
+
+
+<div class="container">
+
+
+    <div class="page-title">
+
+        <h1>
+            My Results
+        </h1>
+
+        <p>
+            View your assessment results.
+        </p>
+
+    </div>
+
+
+    <div
+            id="loading"
+            class="loading">
+
+        Loading results...
+
+    </div>
+
+
+    <div
+            id="resultsGrid"
+            class="results-grid"
+            style="display:none;">
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+    const API_BASE_URL =
+        "http://localhost:8080/api/assessments";
+
+
+    const registerNumber =
+        sessionStorage.getItem(
+            "registerNumber"
+        );
+
+
+    const studentName =
+        sessionStorage.getItem(
+            "studentName"
+        );
+
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
+        studentName || "Student";
+
+
+    if (!registerNumber) {
+
+        document.getElementById(
+            "loading"
+        ).textContent =
+            "Please login again.";
+
+    } else {
+
+        loadResults();
+    }
+
+
+    // =========================
+    // LOAD RESULTS
+    // =========================
+
+    async function loadResults() {
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE_URL}/results/${encodeURIComponent(registerNumber)}`
+                );
+
+
+            const results =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    results.error ||
+                    "Unable to load results."
+                );
+            }
+
+
+            renderResults(results);
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById(
+                "loading"
+            ).textContent =
+                error.message;
+        }
+    }
+
+
+    // =========================
+    // RENDER RESULTS
+    // =========================
+
+    function renderResults(results) {
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+
+        const grid =
+            document.getElementById(
+                "resultsGrid"
+            );
+
+
+        loading.style.display =
+            "none";
+
+
+        grid.style.display =
+            "grid";
+
+
+        if (
+            !results ||
+            results.length === 0
+        ) {
+
+            grid.innerHTML = `
+
+                <div class="empty">
+
+                    You have not completed
+                    any assessments yet.
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        grid.innerHTML = "";
+
+
+        results.forEach(
+            result => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "result-card";
+
+
+                const published =
+                    result.scorePublished === true;
+
+
+                let resultContent = "";
+
+
+                if (published) {
+
+                    resultContent = `
+
+                        <div class="score-box">
+
+                            <div>
+
+                                <div class="score">
+
+                                    ${result.score}
+                                    /
+                                    ${result.totalMarks}
+
+                                </div>
+
+                                <div>
+                                    Score
+                                </div>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="percentage">
+
+                                    ${result.percentage}%
+
+                                </div>
+
+                                <div>
+                                    Percentage
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                } else {
+
+                    resultContent = `
+
+                        <div class="pending-box">
+
+                            <div class="pending-icon">
+                                ⏳
+                            </div>
+
+                            <div class="pending-title">
+
+                                Score Pending
+
+                            </div>
+
+                            <div class="pending-text">
+
+                                Your assessment has been
+                                submitted successfully.
+                                The employer has not published
+                                your score yet.
+
+                            </div>
+
+                        </div>
+
+                    `;
+                }
+
+
+                card.innerHTML = `
+
+                    <h2>
+
+                        ${escapeHtml(
+                            result.assessmentTitle ||
+                            "Assessment"
+                        )}
+
+                    </h2>
+
+
+                    <div class="company">
+
+                        ${escapeHtml(
+                            result.companyName ||
+                            ""
+                        )}
+
+                        ${result.category
+                            ? " • " +
+                              escapeHtml(
+                                  result.category
+                              )
+                            : ""}
+
+                    </div>
+
+
+                    ${resultContent}
+
+
+                    <div class="submitted">
+
+                        Submitted:
+                        ${formatDate(
+                            result.submittedAt
+                        )}
+
+                    </div>
+
+                `;
+
+
+                grid.appendChild(
+                    card
+                );
+            }
+        );
+    }
+
+
+    // =========================
+    // DATE
+    // =========================
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "-";
+        }
+
+
+        try {
+
+            return new Date(value)
+                .toLocaleString();
+
+        } catch {
+
+            return value;
+        }
+    }
+
+
+    // =========================
+    // ESCAPE HTML
+    // =========================
+
+    function escapeHtml(value) {
+
+        if (!value) {
+            return "";
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+</script>
+
+
+</body>
+
+</html>
+

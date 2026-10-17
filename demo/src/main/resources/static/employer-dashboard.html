@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Dashboard | SMARTS</title>
+
+    <!-- Google Fonts: Urbanist & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           ROOT VARIABLES & DESIGN TOKENS (Light & Dark Theme)
+        ========================================================= */
+        :root {
+            --primary: #03045e;
+            --primary-light: #023e8a;
+            --accent: #0077b6;
+            --accent-glow: rgba(3, 4, 94, 0.15);
+
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --purple-border: #ede9fe;
+
+            --green: #10b981;
+            --green-light: #ecfdf5;
+            --green-border: #a7f3d0;
+
+            --orange: #ea580c;
+            --orange-light: #fff7ed;
+            --orange-border: #fed7aa;
+
+            --background: #f8fafc;
+            --white: #ffffff;
+            --card-bg: #ffffff;
+
+            --text: #0f172a;
+            --text-secondary: #334155;
+            --muted: #64748b;
+            --border: #e2e8f0;
+
+            --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.03);
+            --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+            --shadow-hover: 0 20px 30px -10px rgba(15, 23, 42, 0.08), 0 10px 12px -5px rgba(15, 23, 42, 0.04);
+
+            --sidebar-width: 260px;
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --background: #080d1e;
+            --card-bg: #111827;
+            --white: #111827;
+            --text: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --muted: #94a3b8;
+            --border: #1e293b;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            --purple-light: rgba(124, 58, 237, 0.15);
+            --purple-border: rgba(124, 58, 237, 0.3);
+            --green-light: rgba(16, 185, 129, 0.15);
+            --green-border: rgba(16, 185, 129, 0.3);
+        }
+
+        /* =========================================================
+           RESET & BODY
+        ========================================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =========================================================
+           FIXED SIDEBAR (Non-collapsible)
+        ========================================================= */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #03045e 0%, #021a30 100%);
+            padding: 24px 16px;
+            z-index: 1000;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        .brand {
+            height: 55px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            margin-bottom: 32px;
+            white-space: nowrap;
+        }
+
+        .brand-name {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-name::before {
+            content: "";
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #00b4d8;
+            border-radius: 3px;
+            box-shadow: 0 0 12px #00b4d8;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #90e0ef;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 0 13px;
+            margin-bottom: 12px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            color: #caf0f8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            background: #0077b6;
+            color: #ffffff;
+            box-shadow: 0 8px 20px -4px rgba(0, 119, 182, 0.4);
+        }
+
+        .nav-icon {
+            width: 22px;
+            min-width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* Sidebar Bottom */
+        .sidebar-bottom {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 24px;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: #caf0f8;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        /* =========================================================
+           MAIN WRAPPER & TOPBAR
+        ========================================================= */
+        .main {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 76px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 36px;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .page-title {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.4px;
+        }
+
+        [data-theme="dark"] .page-title {
+            color: #60a5fa;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-box {
+            width: 260px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0 14px;
+        }
+
+        .search-box input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 13px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 17px;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+        }
+
+        /* Profile Area */
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .profile-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #03045e 0%, #0077b6 100%);
+            color: #ffffff;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 15px;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .profile-company {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .profile-id {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        /* =========================================================
+           CONTENT & PROPERLY ALIGNED CARDS
+        ========================================================= */
+        .content {
+            padding: 36px 36px 48px;
+        }
+
+        .welcome {
+            background: linear-gradient(135deg, #03045e 0%, #0077b6 100%);
+            border-radius: 24px;
+            padding: 38px 40px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 28px;
+            min-height: 175px;
+            box-shadow: 0 15px 30px -10px rgba(3, 4, 94, 0.3);
+        }
+
+        .welcome-label {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 12px;
+            color: #90e0ef;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 10px;
+        }
+
+        .welcome h1 {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #caf0f8;
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 650px;
+            font-weight: 400;
+        }
+
+        .primary-btn {
+            border: none;
+            background: #ffffff;
+            color: var(--primary);
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .primary-btn:hover {
+            background: #caf0f8;
+            transform: translateY(-2px);
+        }
+
+        /* Statistics Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 26px;
+            min-height: 155px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-blue::before, .stat-green::before, .stat-purple::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+        }
+
+        .stat-blue::before { background: var(--primary); }
+        .stat-green::before { background: var(--green); }
+        .stat-purple::before { background: var(--purple); }
+
+        .stat-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 38px;
+            line-height: 1;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .stat-blue .stat-icon { background: rgba(3, 4, 94, 0.08); color: var(--primary); }
+        .stat-green .stat-icon { background: var(--green-light); color: var(--green); }
+        .stat-purple .stat-icon { background: var(--purple-light); color: var(--purple); }
+
+        .stat-bottom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .stat-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        /* =========================================================
+           DASHBOARD GRID (Properly Aligned Cards)
+        ========================================================= */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr);
+            gap: 26px;
+            align-items: start;
+        }
+
+        .left-column, .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 26px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+            padding-left: 4px;
+        }
+
+        .card-title {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 3px;
+            font-weight: 500;
+        }
+
+        .view-all {
+            border: none;
+            background: rgba(3, 4, 94, 0.08);
+            color: var(--primary);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        [data-theme="dark"] .view-all {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+        }
+
+        .view-all:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Assessments List */
+        .assessment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .assessment-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px;
+            min-height: 72px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .assessment-item:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .assessment-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .assessment-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            border-radius: 12px;
+            background: rgba(3, 4, 94, 0.08);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        [data-theme="dark"] .assessment-icon {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+        }
+
+        .assessment-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 380px;
+        }
+
+        .assessment-meta {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .assessment-status {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 30px;
+            background: var(--green-light);
+            color: var(--green);
+            border: 1px solid var(--green-border);
+        }
+
+        /* Quick Actions Grid */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .quick-action {
+            padding: 20px;
+            min-height: 130px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .quick-action:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .quick-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(3, 4, 94, 0.08);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        [data-theme="dark"] .quick-icon {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+        }
+
+        .quick-action h4 {
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .quick-action p {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        /* Post Course Card */
+        .post-course-card {
+            background: linear-gradient(135deg, #f5f3ff 0%, var(--card-bg) 100%);
+            border: 1px solid var(--purple-border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        [data-theme="dark"] .post-course-card {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, var(--card-bg) 100%);
+        }
+
+        .post-course-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: #ede9fe;
+            color: var(--purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .post-course-card h3 {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .post-course-card p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--muted);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .post-course-btn {
+            border: none;
+            background: var(--purple);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
+        }
+
+        .post-course-btn:hover {
+            background: #6d28d9;
+            transform: translateY(-2px);
+        }
+
+        /* Get Started Card */
+        .get-started {
+            background: var(--green-light);
+            border: 1px solid var(--green-border);
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .get-started-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .get-started h3 {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 16px;
+            margin-bottom: 6px;
+            color: var(--text);
+            font-weight: 800;
+        }
+
+        .get-started p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .get-started button {
+            border: none;
+            background: var(--green);
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .get-started button:hover {
+            background: #059669;
+        }
+
+        /* Empty & Loading States */
+        .loading, .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(3, 4, 94, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .right-column { display: grid; grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 950px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 850px) {
+            .sidebar { width: 80px; padding: 24px 8px; }
+            .sidebar .brand-name, .sidebar .nav-text, .sidebar .nav-section-title, .sidebar .logout-text { display: none; }
+            .sidebar .nav-item, .sidebar .logout-btn { justify-content: center; }
+            .main { margin-left: 80px; }
+            .right-column { grid-template-columns: 1fr; }
+            .search-box { display: none; }
+            .topbar { padding: 0 20px; }
+            .content { padding: 24px 20px 36px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- FIXED PERMANENT SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="brand">
+        <div class="brand-name">SMARTS</div>
+    </div>
+    <div class="nav-section-title">Main Menu</div>
+    <nav class="nav-menu">
+        <div class="nav-item active" onclick="goDashboard()">
+            <div class="nav-icon">⌂</div>
+            <div class="nav-text">Dashboard</div>
+        </div>
+        <div class="nav-item" onclick="postAssessment()">
+            <div class="nav-icon">＋</div>
+            <div class="nav-text">Post Assessment</div>
+        </div>
+        <div class="nav-item" onclick="postCourse()">
+            <div class="nav-icon">◈</div>
+            <div class="nav-text">Post Course</div>
+        </div>
+        <div class="nav-item" onclick="viewAssessments()">
+            <div class="nav-icon">▣</div>
+            <div class="nav-text">My Assessments</div>
+        </div>
+        <div class="nav-item" onclick="viewCourses()">
+            <div class="nav-icon">◇</div>
+            <div class="nav-text">My Courses</div>
+        </div>
+        <div class="nav-item" onclick="viewApplications()">
+            <div class="nav-icon">♧</div>
+            <div class="nav-text">Applications</div>
+        </div>
+        <div class="nav-item" onclick="companyProfile()">
+            <div class="nav-icon">◉</div>
+            <div class="nav-text">Company Profile</div>
+        </div>
+    </nav>
+    <div class="sidebar-bottom">
+        <button class="logout-btn" onclick="logout()">
+            <div class="logout-icon">⇥</div>
+            <div class="logout-text">Logout</div>
+        </button>
+    </div>
+</aside>
+
+<!-- MAIN CONTAINER -->
+<main class="main" id="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="page-title">Company Dashboard</div>
+        </div>
+        <div class="topbar-right">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search assessments..." oninput="filterAssessments()">
+            </div>
+            <!-- Theme Toggle Button -->
+            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark/Light Theme">🌙</button>
+            <div class="profile" onclick="companyProfile()">
+                <div class="profile-avatar" id="companyInitial">C</div>
+                <div class="profile-info">
+                    <div class="profile-company" id="companyNameTop">Company</div>
+                    <div class="profile-id" id="employerIdTop">Company ID</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <section class="content">
+
+        <!-- WELCOME BANNER -->
+        <div class="welcome">
+            <div class="welcome-content">
+                <div class="welcome-label">Company Workspace</div>
+                <h1>Welcome back, <span id="welcomeCompany">Company</span></h1>
+                <p>Manage your assessments, publish courses, evaluate student skills, and track your recruitment activities from one place.</p>
+            </div>
+            <div class="welcome-action">
+                <button class="primary-btn" onclick="postAssessment()">+ Create Assessment</button>
+            </div>
+        </div>
+
+        <!-- STATISTICS GRID -->
+        <div class="stats-grid">
+            <div class="stat-card stat-blue">
+                <div class="stat-top">
+                    <div>
+                        <div class="stat-label">Total Assessments</div>
+                        <div class="stat-value" id="totalAssessmentsCount">0</div>
+                    </div>
+                    <div class="stat-icon">▣</div>
+                </div>
+                <div class="stat-bottom"><span class="stat-indicator"></span>Assessments created by your company</div>
+            </div>
+            <div class="stat-card stat-green">
+                <div class="stat-top">
+                    <div>
+                        <div class="stat-label">Published</div>
+                        <div class="stat-value" id="publishedAssessmentsCount">0</div>
+                    </div>
+                    <div class="stat-icon">✓</div>
+                </div>
+                <div class="stat-bottom"><span class="stat-indicator"></span>Currently published assessments</div>
+            </div>
+            <div class="stat-card stat-purple">
+                <div class="stat-top">
+                    <div>
+                        <div class="stat-label">Total Questions</div>
+                        <div class="stat-value" id="totalQuestionsCount">0</div>
+                    </div>
+                    <div class="stat-icon">∑</div>
+                </div>
+                <div class="stat-bottom"><span class="stat-indicator"></span>Questions across your assessments</div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD GRID -->
+        <div class="dashboard-grid">
+
+            <!-- LEFT COLUMN -->
+            <div class="left-column">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Recent Assessments</div>
+                            <div class="card-subtitle">Latest assessments posted by your company</div>
+                        </div>
+                        <button class="view-all" onclick="viewAssessments()">View all</button>
+                    </div>
+                    <div id="assessmentList" class="assessment-list">
+                        <div class="loading"><div class="spinner"></div>Loading assessments...</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Quick Actions</div>
+                            <div class="card-subtitle">Common company activities</div>
+                        </div>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="quick-action" onclick="postAssessment()">
+                            <div class="quick-icon">＋</div>
+                            <h4>Post Assessment</h4>
+                            <p>Create a new skill assessment for students.</p>
+                        </div>
+                        <div class="quick-action" onclick="viewAssessments()">
+                            <div class="quick-icon">▣</div>
+                            <h4>Manage Assessments</h4>
+                            <p>View and manage your posted assessments.</p>
+                        </div>
+                        <div class="quick-action" onclick="reviewSubmissions()">
+                            <div class="quick-icon">📊</div>
+                            <h4>Review Submissions</h4>
+                            <p>View student submissions and publish scores.</p>
+                        </div>
+                        <div class="quick-action" onclick="viewApplications()">
+                            <div class="quick-icon">♧</div>
+                            <h4>View Applications</h4>
+                            <p>Check student applications and submissions.</p>
+                        </div>
+                        <div class="quick-action" onclick="companyProfile()">
+                            <div class="quick-icon">◉</div>
+                            <h4>Company Profile</h4>
+                            <p>Update your company information.</p>
+                        </div>
+                        <div class="quick-action" onclick="postCourse()">
+                            <div class="quick-icon">◈</div>
+                            <h4>Post Course</h4>
+                            <p>Add a new learning course for students.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="right-column">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Courses</div>
+                            <div class="card-subtitle">Share learning opportunities</div>
+                        </div>
+                    </div>
+                    <div class="post-course-card">
+                        <div class="post-course-icon">◈</div>
+                        <h3>Post a New Course</h3>
+                        <p>Create and publish skill-based courses that help students improve their knowledge and prepare for recruitment.</p>
+                        <button class="post-course-btn" onclick="postCourse()">+ Post Course</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Get Started</div>
+                            <div class="card-subtitle">Build your recruitment pipeline</div>
+                        </div>
+                    </div>
+                    <div class="get-started">
+                        <div class="get-started-icon">✓</div>
+                        <h3>Ready to find the right talent?</h3>
+                        <p>Create an assessment and evaluate students based on the required recruitment skills.</p>
+                        <button onclick="postAssessment()">Create Assessment</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+</main>
+
+<script>
+    let allAssessments = [];
+
+    const employerId = sessionStorage.getItem("employerId");
+    const companyName = sessionStorage.getItem("companyName") || "Company";
+
+    document.getElementById("welcomeCompany").textContent = companyName;
+    document.getElementById("companyNameTop").textContent = companyName;
+    document.getElementById("employerIdTop").textContent = employerId ? `ID: ${employerId}` : "Company Profile";
+    document.getElementById("companyInitial").textContent = companyName.charAt(0).toUpperCase();
+
+    // --------------------------
+    // Theme Switcher Logic
+    // --------------------------
+    function toggleTheme() {
+        const html = document.documentElement;
+        const btn = document.getElementById("themeToggleBtn");
+        if (html.getAttribute("data-theme") === "dark") {
+            html.removeAttribute("data-theme");
+            localStorage.setItem("smartsTheme", "light");
+            btn.textContent = "🌙";
+        } else {
+            html.setAttribute("data-theme", "dark");
+            localStorage.setItem("smartsTheme", "dark");
+            btn.textContent = "☀️";
+        }
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+        const savedTheme = localStorage.getItem("smartsTheme");
+        const btn = document.getElementById("themeToggleBtn");
+        if (savedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+            btn.textContent = "☀️";
+        } else {
+            btn.textContent = "🌙";
+        }
+        loadEmployerAssessments();
+    });
+
+    async function loadEmployerAssessments() {
+        const list = document.getElementById("assessmentList");
+        if (!employerId) {
+            list.innerHTML = `<div class="empty-state"><h3>Session not found</h3><p>Please login again.</p><button class="view-all" onclick="logout()">Login Again</button></div>`;
+            updateDashboardStats([]);
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/assessments/employer/${encodeURIComponent(employerId)}`);
+            if (!response.ok) throw new Error("Failed to load assessments");
+            const data = await response.json();
+            allAssessments = Array.isArray(data) ? data : [];
+            updateDashboardStats(allAssessments);
+            renderAssessments(allAssessments);
+        } catch (error) {
+            console.error("Error:", error);
+            updateDashboardStats([]);
+            list.innerHTML = `<div class="empty-state"><h3>Unable to load assessments</h3><p>Check server connection.</p><button class="view-all" onclick="loadEmployerAssessments()">Try Again</button></div>`;
+        }
+    }
+
+    function updateDashboardStats(assessments) {
+        const total = Array.isArray(assessments) ? assessments.length : 0;
+        const published = Array.isArray(assessments) ? assessments.filter(a => String(a.status || "").toLowerCase() === "published").length : 0;
+        const totalQuestions = Array.isArray(assessments) ? assessments.reduce((acc, a) => acc + (Array.isArray(a.questions) ? a.questions.length : Number(a.questionCount) || 0), 0) : 0;
+
+        document.getElementById("totalAssessmentsCount").textContent = total;
+        document.getElementById("publishedAssessmentsCount").textContent = published;
+        document.getElementById("totalQuestionsCount").textContent = totalQuestions;
+    }
+
+    function renderAssessments(assessments) {
+        const list = document.getElementById("assessmentList");
+        if (!assessments || assessments.length === 0) {
+            list.innerHTML = `<div class="empty-state"><h3>No assessments yet</h3><p>Create your first assessment.</p></div>`;
+            return;
+        }
+
+        list.innerHTML = assessments.slice(0, 5).map(a => `
+            <div class="assessment-item" onclick="openAssessmentSubmissions(${a.id})">
+                <div class="assessment-left">
+                    <div class="assessment-icon">${getAssessmentIcon(a.category)}</div>
+                    <div class="assessment-info">
+                        <div class="assessment-name" title="${escapeHtml(a.title || "")}">${escapeHtml(a.title || "Untitled")}</div>
+                        <div class="assessment-meta">
+                            <span>${escapeHtml(a.category || "General")}</span> •
+                            <span>${Array.isArray(a.questions) ? a.questions.length : (a.questionCount || 0)} questions</span> •
+                            <span>${escapeHtml(String(a.duration || "N/A"))}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="assessment-status">${escapeHtml(String(a.status || "PUBLISHED"))}</div>
+            </div>
+        `).join("");
+    }
+
+    function filterAssessments() {
+        const search = document.getElementById("searchInput").value.trim().toLowerCase();
+        if (!search) {
+            renderAssessments(allAssessments);
+            return;
+        }
+        const filtered = allAssessments.filter(a =>
+            String(a.title || "").toLowerCase().includes(search) ||
+            String(a.category || "").toLowerCase().includes(search)
+        );
+        renderAssessments(filtered);
+    }
+
+    function getAssessmentIcon(category) {
+        const val = String(category || "").toLowerCase();
+        if (val.includes("coding") || val.includes("technical")) return "⌘";
+        if (val.includes("aptitude")) return "∑";
+        if (val.includes("communication")) return "Aa";
+        return "▣";
+    }
+
+    function escapeHtml(str) {
+        return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    function goDashboard() { window.location.href = "employer-dashboard.html"; }
+    function postAssessment() { window.location.href = "post-assessment.html"; }
+    function viewAssessments() { window.location.href = "my-assessments.html"; }
+    function reviewSubmissions() { window.location.href = "my-assessments.html"; }
+    function openAssessmentSubmissions(id) { if (id) window.location.href = `my-assessments.html?id=${encodeURIComponent(id)}`; }
+    function postCourse() { window.location.href = "post-course.html"; }
+    function viewCourses() { window.location.href = "my-courses.html"; }
+    function viewApplications() { window.location.href = "applications.html"; }
+    function companyProfile() { window.location.href = "company-profile.html"; }
+    function logout() { sessionStorage.removeItem("employerId"); sessionStorage.removeItem("companyName"); window.location.href = "index.html"; }
+
+    window.addEventListener("pageshow", loadEmployerAssessments);
+</script>
+
+</body>
+</html>

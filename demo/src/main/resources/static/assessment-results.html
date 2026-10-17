@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Assignment Results | SMARTS</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .sidebar {
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #0f1b3d;
+
+            color: white;
+
+            padding: 28px 18px;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 0 10px;
+
+            margin-bottom: 45px;
+        }
+
+        .logo-box {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 11px;
+
+            background: #2563eb;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .menu-title {
+            color: #94a3b8;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            padding: 0 12px;
+
+            margin-bottom: 12px;
+        }
+
+        .nav-item {
+            width: 100%;
+
+            border: none;
+
+            background: transparent;
+
+            color: #cbd5e1;
+
+            padding: 13px 14px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            margin-bottom: 5px;
+
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.08);
+
+            color: white;
+        }
+
+        .nav-item.active {
+            background: #2563eb;
+
+            color: white;
+        }
+
+        .nav-icon {
+            width: 22px;
+
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .main {
+            margin-left: 250px;
+
+            min-height: 100vh;
+
+            padding: 40px 45px;
+        }
+
+        .header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .back-btn {
+            border: 1px solid #cbd5e1;
+
+            background: white;
+
+            padding: 10px 17px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+        }
+
+        .assignment-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+        }
+
+        .assignment-title {
+            font-size: 21px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+        .assignment-description {
+            color: #64748b;
+
+            font-size: 14px;
+
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+        .info {
+            background: #f1f5f9;
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            font-size: 12px;
+
+            color: #475569;
+        }
+
+        .success {
+            background: #dcfce7;
+
+            color: #15803d;
+        }
+
+        .table-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 22px 25px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-size: 18px;
+        }
+
+        .student-count {
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: left;
+
+            padding: 15px 20px;
+        }
+
+        td {
+            padding: 17px 20px;
+
+            border-top: 1px solid #f1f5f9;
+
+            font-size: 13px;
+        }
+
+        .student-name {
+            font-weight: 600;
+        }
+
+        .register {
+            color: #64748b;
+        }
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            background: #dcfce7;
+
+            color: #15803d;
+        }
+
+        .score {
+            font-weight: 700;
+
+            color: #2563eb;
+        }
+
+        .empty {
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 40px;
+
+            margin-bottom: 12px;
+        }
+
+        @media(max-width:850px) {
+
+            .sidebar {
+                width: 70px;
+            }
+
+            .logo-text,
+            .menu-title,
+            .nav-item span:not(.nav-icon) {
+                display: none;
+            }
+
+            .logo {
+                justify-content: center;
+            }
+
+            .nav-item {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+
+                padding: 25px 20px;
+            }
+
+            .header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            table {
+                min-width: 800px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-box">
+            SM
+        </div>
+
+        <div class="logo-text">
+            SMARTS
+        </div>
+
+    </div>
+
+
+    <div class="menu-title">
+        Employer
+    </div>
+
+
+    <button
+            class="nav-item"
+            onclick="goDashboard()">
+
+        <span class="nav-icon">
+            ⌂
+        </span>
+
+        <span>
+            Dashboard
+        </span>
+
+    </button>
+
+
+    <button
+            class="nav-item"
+            onclick="postAssignment()">
+
+        <span class="nav-icon">
+            ＋
+        </span>
+
+        <span>
+            Post Assignment
+        </span>
+
+    </button>
+
+
+    <button
+            class="nav-item active">
+
+        <span class="nav-icon">
+            ▣
+        </span>
+
+        <span>
+            Assignment Results
+        </span>
+
+    </button>
+
+
+    <div class="sidebar-bottom">
+
+        <button
+                class="nav-item"
+                onclick="logout()">
+
+            <span class="nav-icon">
+                ↪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Assignment Results
+            </h1>
+
+            <p>
+                View students who have taken your assignment.
+            </p>
+
+        </div>
+
+
+        <button
+                class="back-btn"
+                onclick="goDashboard()">
+
+            ← Dashboard
+
+        </button>
+
+    </div>
+
+
+    <!-- ASSIGNMENT INFORMATION -->
+
+    <div
+            class="assignment-card"
+            id="assignmentInfo">
+
+    </div>
+
+
+    <!-- STUDENTS -->
+
+    <div class="table-card">
+
+
+        <div class="table-header">
+
+            <h2>
+                Students Who Took the Assignment
+            </h2>
+
+            <span
+                    class="student-count"
+                    id="studentCount">
+
+                0 Students
+
+            </span>
+
+        </div>
+
+
+        <div id="resultsContainer">
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+    /* =========================
+       LOAD ASSIGNMENT
+    ========================= */
+
+    function loadAssignment() {
+
+        const stored =
+            localStorage.getItem(
+                "currentAssignment"
+            );
+
+
+        const info =
+            document.getElementById(
+                "assignmentInfo"
+            );
+
+
+        if (!stored) {
+
+            info.innerHTML = `
+
+                <div class="assignment-title">
+                    No Assignment Found
+                </div>
+
+                <div class="assignment-description">
+                    Create an assignment first.
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const assignment =
+            JSON.parse(stored);
+
+
+        info.innerHTML = `
+
+            <div class="assignment-title">
+
+                ${escapeHTML(
+                    assignment.title
+                )}
+
+            </div>
+
+
+            <div class="assignment-description">
+
+                ${escapeHTML(
+                    assignment.description
+                )}
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info">
+                    Category:
+                    ${escapeHTML(
+                        assignment.category
+                    )}
+                </span>
+
+                <span class="info">
+                    Duration:
+                    ${assignment.duration}
+                    minutes
+                </span>
+
+                <span class="info">
+                    Questions:
+                    ${assignment.questions.length}
+                </span>
+
+                <span class="info success">
+                    Published
+                </span>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================
+       LOAD STUDENTS
+    ========================= */
+
+    function loadResults() {
+
+        const stored =
+            localStorage.getItem(
+                "assignmentSubmissions"
+            );
+
+
+        const container =
+            document.getElementById(
+                "resultsContainer"
+            );
+
+
+        if (!stored) {
+
+            showEmpty();
+
+            return;
+
+        }
+
+
+        const students =
+            JSON.parse(stored);
+
+
+        document.getElementById(
+            "studentCount"
+        ).textContent =
+            students.length +
+            (
+                students.length === 1
+                    ? " Student"
+                    : " Students"
+            );
+
+
+        if (students.length === 0) {
+
+            showEmpty();
+
+            return;
+
+        }
+
+
+        let html = `
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            STUDENT
+                        </th>
+
+                        <th>
+                            REGISTER NUMBER
+                        </th>
+
+                        <th>
+                            DEPARTMENT
+                        </th>
+
+                        <th>
+                            SUBMITTED
+                        </th>
+
+                        <th>
+                            SCORE
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+        `;
+
+
+        students.forEach(
+            student => {
+
+                html += `
+
+                    <tr>
+
+                        <td>
+
+                            <div class="student-name">
+
+                                ${escapeHTML(
+                                    student.name
+                                )}
+
+                            </div>
+
+                        </td>
+
+
+                        <td class="register">
+
+                            ${escapeHTML(
+                                student.registerNumber
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                student.department
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                student.submittedAt
+                            )}
+
+                        </td>
+
+
+                        <td class="score">
+
+                            ${escapeHTML(
+                                student.score
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="status">
+
+                                ${escapeHTML(
+                                    student.status
+                                )}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+
+        html += `
+
+                </tbody>
+
+            </table>
+
+        `;
+
+
+        container.innerHTML = html;
+
+    }
+
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    function showEmpty() {
+
+        document.getElementById(
+            "studentCount"
+        ).textContent =
+            "0 Students";
+
+
+        document.getElementById(
+            "resultsContainer"
+        ).innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    👥
+                </div>
+
+                <strong>
+                    No students have taken this assignment yet.
+                </strong>
+
+                <p style="margin-top:8px;">
+                    Student submissions will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    function goDashboard() {
+
+        window.location.href =
+            "employer-dashboard.html";
+
+    }
+
+
+    function postAssignment() {
+
+        window.location.href =
+            "post-assignment.html";
+
+    }
+
+
+    function logout() {
+
+        sessionStorage.removeItem(
+            "employerId"
+        );
+
+        window.location.href =
+            "index.html";
+
+    }
+
+
+    /* =========================
+       SECURITY
+    ========================= */
+
+    function escapeHTML(value) {
+
+        if (value === null ||
+            value === undefined) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* LOAD */
+
+    loadAssignment();
+
+    loadResults();
+
+</script>
+
+
+</body>
+
+</html>

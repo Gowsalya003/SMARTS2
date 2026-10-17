@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Assessment Submissions | SMARTS</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .topbar {
+            height: 70px;
+            background: #0f1b3d;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .header-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 20px rgba(15, 27, 61, 0.08);
+
+            margin-bottom: 25px;
+        }
+
+        .header-card h1 {
+            color: #0f1b3d;
+            margin-bottom: 8px;
+        }
+
+        .header-card p {
+            color: #6b7280;
+        }
+
+        .publish-btn {
+            margin-top: 20px;
+
+            background: #16a34a;
+            color: white;
+
+            border: none;
+
+            padding: 13px 25px;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .publish-btn:hover {
+            background: #15803d;
+        }
+
+        .publish-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .table-card {
+            background: white;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px rgba(15, 27, 61, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #0f1b3d;
+            color: white;
+
+            padding: 16px;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+        td {
+            padding: 16px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            font-size: 14px;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 11px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .published {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #6b7280;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #6b7280;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+
+    <div class="logo">
+        SMARTS
+    </div>
+
+    <div>
+        Employer
+    </div>
+
+</div>
+
+
+
+<div class="container">
+
+
+    <div class="header-card">
+
+        <h1 id="assessmentTitle">
+            Assessment Submissions
+        </h1>
+
+        <p id="assessmentInfo">
+            Loading...
+        </p>
+
+
+        <button
+                id="publishBtn"
+                class="publish-btn"
+                onclick="publishScores()">
+
+            Post Score to Students
+
+        </button>
+
+    </div>
+
+
+
+    <div class="table-card">
+
+        <div id="loading"
+             class="loading">
+
+            Loading submissions...
+
+        </div>
+
+
+        <table id="submissionTable"
+               style="display:none;">
+
+            <thead>
+
+            <tr>
+
+                <th>
+                    #
+                </th>
+
+                <th>
+                    Student Name
+                </th>
+
+                <th>
+                    Register Number
+                </th>
+
+                <th>
+                    Score
+                </th>
+
+                <th>
+                    Percentage
+                </th>
+
+                <th>
+                    Submitted At
+                </th>
+
+                <th>
+                    Status
+                </th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="submissionBody">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    const API_BASE_URL =
+        "http://localhost:8080/api/assessments";
+
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const assessmentId =
+        params.get("id");
+
+
+    let submissions = [];
+
+
+    if (!assessmentId) {
+
+        alert(
+            "Assessment ID is missing."
+        );
+
+    } else {
+
+        loadSubmissions();
+    }
+
+
+    // =========================
+    // LOAD
+    // =========================
+
+    async function loadSubmissions() {
+
+        try {
+
+            // Load assessment
+
+            const assessmentResponse =
+                await fetch(
+                    `${API_BASE_URL}/${assessmentId}`
+                );
+
+
+            const assessment =
+                await assessmentResponse.json();
+
+
+            document.getElementById(
+                "assessmentTitle"
+            ).textContent =
+                assessment.title;
+
+
+            document.getElementById(
+                "assessmentInfo"
+            ).textContent =
+                `${assessment.category} • ${assessment.questionCount} Questions • ${assessment.totalMarks} Marks`;
+
+
+            // Load submissions
+
+            const response =
+                await fetch(
+                    `${API_BASE_URL}/${assessmentId}/submissions`
+                );
+
+
+            submissions =
+                await response.json();
+
+
+            renderSubmissions();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById(
+                "loading"
+            ).textContent =
+                "Unable to load submissions.";
+        }
+    }
+
+
+    // =========================
+    // RENDER
+    // =========================
+
+    function renderSubmissions() {
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+
+        const table =
+            document.getElementById(
+                "submissionTable"
+            );
+
+
+        const body =
+            document.getElementById(
+                "submissionBody"
+            );
+
+
+        loading.style.display =
+            "none";
+
+
+        if (
+            !submissions ||
+            submissions.length === 0
+        ) {
+
+            loading.textContent =
+                "No students have submitted this assessment yet.";
+
+            loading.style.display =
+                "block";
+
+            return;
+        }
+
+
+        table.style.display =
+            "table";
+
+
+        body.innerHTML = "";
+
+
+        submissions.forEach(
+            (submission, index) => {
+
+                const published =
+                    submission.scorePublished === true;
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            submission.studentName || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            submission.studentRegisterNumber || "-"
+                        )}
+                    </td>
+
+                    <td>
+
+                        ${submission.score}
+                        /
+                        ${submission.totalMarks}
+
+                    </td>
+
+                    <td>
+
+                        ${submission.percentage}%
+
+                    </td>
+
+                    <td>
+
+                        ${formatDate(
+                            submission.submittedAt
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        <span class="status
+                            ${published
+                                ? "published"
+                                : "pending"}">
+
+                            ${published
+                                ? "Published"
+                                : "Pending"}
+
+                        </span>
+
+                    </td>
+
+                `;
+
+
+                body.appendChild(row);
+            }
+        );
+
+
+        /*
+         * Disable button if already published.
+         */
+
+        const allPublished =
+            submissions.every(
+                submission =>
+                    submission.scorePublished === true
+            );
+
+
+        if (allPublished) {
+
+            const button =
+                document.getElementById(
+                    "publishBtn"
+                );
+
+
+            button.disabled = true;
+
+            button.textContent =
+                "Scores Already Published";
+        }
+    }
+
+
+    // =========================
+    // PUBLISH
+    // =========================
+
+    async function publishScores() {
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to publish the scores to all students?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const button =
+            document.getElementById(
+                "publishBtn"
+            );
+
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "Publishing...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE_URL}/${assessmentId}/publish-scores`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to publish scores."
+                );
+            }
+
+
+            alert(
+                data.message
+            );
+
+
+            await loadSubmissions();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                error.message
+            );
+
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Post Score to Students";
+        }
+    }
+
+
+    // =========================
+    // DATE
+    // =========================
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "-";
+        }
+
+
+        try {
+
+            return new Date(value)
+                .toLocaleString();
+
+        } catch {
+
+            return value;
+        }
+    }
+
+
+    // =========================
+    // ESCAPE HTML
+    // =========================
+
+    function escapeHtml(value) {
+
+        if (!value) {
+            return "";
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+</script>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Profile | Skill Mapping</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:"Segoe UI", Arial, sans-serif;
+        }
+
+        html{
+            scroll-behavior:smooth;
+        }
+
+        body{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:flex-start;
+            padding:40px 30px;
+            overflow-y:auto;
+            overflow-x:hidden;
+
+            background:
+                radial-gradient(circle, rgba(30,58,95,.12) 1.5px, transparent 2px),
+                linear-gradient(
+                    135deg,
+                    #f9fbfe 0%,
+                    #eef5ff 50%,
+                    #f9fbfe 100%
+                );
+
+            background-size:28px 28px, cover;
+        }
+
+        /*=========================
+                MAIN CARD
+        =========================*/
+
+        .profile-container{
+            width:1200px;
+            max-width:95%;
+            background:#fff;
+            border-radius:15px;
+            padding:40px;
+            box-shadow:0 8px 25px rgba(0,0,0,.08);
+        }
+
+        /*=========================
+                HEADER
+        =========================*/
+
+        .header{
+            background:#1E3A5F;
+            color:#fff;
+            padding:30px 35px;
+            margin:-40px -40px 40px;
+            border-radius:15px 15px 0 0;
+        }
+
+        .header h1{
+            font-size:30px;
+            margin-bottom:8px;
+        }
+
+        .header p{
+            color:#dbe7f5;
+            font-size:15px;
+        }
+
+        /*=========================
+              SECTION TITLE
+        =========================*/
+
+        .section-title{
+            font-size:22px;
+            font-weight:700;
+            color:#163D82;
+            margin-top:40px;
+            margin-bottom:25px;
+            padding-bottom:10px;
+            border-bottom:2px solid #e8eef8;
+        }
+
+        /*=========================
+                FORM GRID
+        =========================*/
+
+        .form-grid{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:25px;
+        }
+
+        .input-group{
+            display:flex;
+            flex-direction:column;
+        }
+
+        .input-group.full{
+            grid-column:1/-1;
+        }
+
+        label{
+            margin-bottom:8px;
+            color:#334155;
+            font-size:14px;
+            font-weight:600;
+        }
+
+        /*=========================
+                INPUTS
+        =========================*/
+
+        input,
+        select,
+        textarea{
+            width:100%;
+            border:1px solid #cfd8e5;
+            border-radius:10px;
+            padding:12px 14px;
+            font-size:14px;
+            background:#fff;
+            transition:all .3s ease;
+        }
+
+        input,
+        select{
+            height:48px;
+        }
+
+        textarea{
+            min-height:120px;
+            resize:vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus{
+            outline:none;
+            border-color:#2563eb;
+            box-shadow:0 0 0 3px rgba(37,99,235,.12);
+        }
+
+        input:disabled{
+            background:#f1f5f9;
+            cursor:not-allowed;
+        }
+
+        /* ================= SKILL CHECKBOXES ================= */
+
+        .skill-options{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            margin-top:8px;
+        }
+
+        .skill-option{
+            width:100%;
+            min-height:50px;
+            display:flex;
+            flex-direction:row;
+            align-items:center;
+            justify-content:flex-start;
+
+            padding:14px 16px;
+
+            background:#fff;
+            border:1px solid #cfd8e5;
+            border-radius:8px;
+
+            cursor:pointer;
+            transition:all .2s ease;
+        }
+
+        /* Fix the checkbox size */
+        .skill-option input[type="checkbox"]{
+            width:18px !important;
+            height:18px !important;
+            min-width:18px;
+
+            margin:0 12px 0 0;
+            padding:0 !important;
+
+            cursor:pointer;
+            accent-color:#163D82;
+        }
+
+        /* Skill name */
+        .skill-option span{
+            color:#334155;
+            font-size:14px;
+            font-weight:500;
+        }
+
+        /* Hover */
+        .skill-option:hover{
+            border-color:#2563eb;
+            background:#f8fbff;
+        }
+
+        /* Selected box */
+        .skill-option:has(input:checked){
+            background:#f1f5ff;
+            border-color:#163D82;
+        }
+
+        .skill-option:has(input:checked) span{
+            color:#163D82;
+        }
+
+        /*=========================
+               OTHER SKILLS
+        =========================*/
+
+        .manual-skill{
+            margin-top:25px;
+            display:flex;
+            flex-direction:column;
+        }
+
+        .manual-skill label{
+            margin-bottom:8px;
+        }
+
+        .manual-skill input{
+            width:100%;
+        }
+
+        .manual-skill small{
+            margin-top:8px;
+            color:#64748b;
+            font-size:13px;
+        }
+
+        /*=========================
+             UPLOAD SECTION
+        =========================*/
+
+        .resume-box{
+            margin-top:45px;
+        }
+
+        .upload-box{
+            border:2px dashed #c7d7f5;
+            border-radius:14px;
+            background:#f8fbff;
+            padding:40px;
+            text-align:center;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            transition:all .3s ease;
+        }
+
+        .upload-box:hover{
+            background:#eef5ff;
+            border-color:#2563eb;
+        }
+
+        .upload-icon{
+            font-size:45px;
+            margin-bottom:18px;
+        }
+
+        .upload-box h3{
+            color:#163D82;
+            font-size:23px;
+            margin-bottom:10px;
+        }
+
+        .upload-box p{
+            color:#64748b;
+            font-size:14px;
+            line-height:1.7;
+        }
+
+        .upload-btn{
+            margin-top:20px;
+            background:#163D82;
+            color:#fff;
+            padding:12px 28px;
+            border-radius:8px;
+            font-weight:600;
+            font-size:15px;
+            border:none;
+            cursor:pointer;
+        }
+
+        .resume-info{
+            margin-top:18px;
+            text-align:center;
+            color:#64748b;
+            font-size:14px;
+        }
+
+        /*=========================
+                BUTTONS
+        =========================*/
+
+        .button-row{
+            display:flex;
+            gap:15px;
+            margin-top:40px;
+        }
+
+        .save-btn{
+            width:210px;
+            height:50px;
+            background:#163D82;
+            color:#fff;
+            border:none;
+            border-radius:10px;
+            font-size:15px;
+            font-weight:600;
+            cursor:pointer;
+            transition:all .3s ease;
+        }
+
+        .save-btn:hover{
+            background:#1E4F9E;
+            transform:translateY(-2px);
+        }
+
+        .cancel-btn{
+            width:150px;
+            height:50px;
+            background:#fff;
+            color:#475569;
+            border:1px solid #cbd5e1;
+            border-radius:10px;
+            font-weight:600;
+            cursor:pointer;
+            transition:all .3s ease;
+        }
+
+        .cancel-btn:hover{
+            background:#f8fafc;
+        }
+
+        /*=========================
+                MESSAGE
+        =========================*/
+
+        .message{
+            margin-top:18px;
+            color:#2563eb;
+            font-size:14px;
+        }
+
+        /*=========================
+                MOBILE
+        =========================*/
+
+        @media (max-width:768px){
+
+            .profile-container{
+                padding:25px;
+            }
+
+            .header{
+                margin:-25px -25px 30px;
+            }
+
+            .form-grid,
+            .skill-container{
+                grid-template-columns:1fr;
+            }
+
+            .button-row{
+                flex-direction:column;
+            }
+
+            .save-btn,
+            .cancel-btn{
+                width:100%;
+            }
+        }
+    </style>
+
+</head>
+
+
+
+<!-- ====================== SKILLS ====================== -->
+
+<body>
+
+<div class="profile-container">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="header">
+        <h1 id="pageTitle">Complete Your Profile</h1>
+        <p id="pageDescription">
+            Fill in your personal, academic and skill details.
+        </p>
+    </div>
+
+    <form id="profileForm" onsubmit="saveProfile(event)">
+
+        <!-- ================= BASIC DETAILS ================= -->
+
+        <h2 class="section-title">Basic Details</h2>
+
+        <div class="form-grid">
+
+            <div class="input-group">
+                <label>Register Number</label>
+                <input type="text" id="registerNumber" disabled>
+            </div>
+
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter phone number" required>
+            </div>
+
+        </div>
+
+        <!-- ================= ACADEMIC DETAILS ================= -->
+
+        <h2 class="section-title">Academic Details</h2>
+
+        <div class="form-grid">
+
+            <div class="input-group">
+                <label>Department</label>
+                <select id="department" required>
+                    <option value="">Select Department</option>
+                    <option>MBA</option>
+                    <option>MBA IT</option>
+                    <option>MBA HRM</option>
+                    <option>MBA Tourism and Managment</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>College</label>
+                <input type="text"
+                       id="college"
+                       value="Avinashilingam Institute for Home Science and Higher Education for Women"
+                       readonly>
+            </div>
+
+            <div class="input-group">
+                <label>Year of Study</label>
+                <select id="yearOfStudy">
+                    <option value="">Select Year</option>
+                    <option>I Year</option>
+                    <option>II Year</option>
+                    <option>III Year</option>
+                    <option>IV Year</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>CGPA</label>
+                <input type="number"
+                       id="cgpa"
+                       min="0"
+                       max="10"
+                       step="0.01"
+                       placeholder="Example: 8.75">
+            </div>
+
+            <div class="input-group">
+                <label>Graduation Year</label>
+                <input type="number"
+                       id="graduationYear"
+                       placeholder="2026">
+            </div>
+
+        </div>
+
+        <!-- ================= SKILLS ================= -->
+
+        <!-- ================= SKILLS ================= -->
+
+        <h2 class="section-title">Skills</h2>
+
+        <div class="skills-section">
+
+            <p class="skills-description">
+                Select all the skills you are familiar with.
+            </p>
+
+            <div class="input-group">
+
+                <label>Choose Your Skills</label>
+
+                <div class="skill-options" id="skillOptions">
+
+                    <label class="skill-option">
+                        <input type="checkbox" value="Communication">
+                        <span>Communication</span>
+                    </label>
+
+                    <label class="skill-option">
+                        <input type="checkbox" value="Leadership">
+                        <span>Leadership</span>
+                    </label>
+
+                    <label class="skill-option">
+                        <input type="checkbox" value="Teamwork">
+                        <span>Teamwork</span>
+                    </label>
+
+                    <label class="skill-option">
+                        <input type="checkbox" value="Problem Solving">
+                        <span>Problem Solving</span>
+                    </label>
+
+                    <label class="skill-option">
+                        <input type="checkbox" value="Time Management">
+                        <span>Time Management</span>
+                    </label>
+
+                    <label class="skill-option">
+                        <input type="checkbox" value="Critical Thinking">
+                        <span>Critical Thinking</span>
+                    </label>
+
+                    <label class="skill-option">
+                        <input type="checkbox" value="Presentation">
+                        <span>Presentation</span>
+                    </label>
+
+                    <label class="skill-option">
+                        <input type="checkbox" value="Public Speaking">
+                        <span>Public Speaking</span>
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="manual-skill">
+
+                <label for="customSkill">Other Skills</label>
+
+                <input
+                        type="text"
+                        id="customSkill"
+                        placeholder="Enter other skills separated by commas">
+
+                <small>
+                    Example: Canva, Tally, SAP, Figma, Python, SQL
+                </small>
+
+            </div>
+
+        </div>
+        <!-- ================= CERTIFICATIONS ================= -->
+
+        <h2 class="section-title">Certifications</h2>
+
+        <div class="form-grid">
+
+            <div class="input-group full">
+
+                <label>Certification Name</label>
+
+                <input
+                        type="text"
+                        id="certificateName"
+                        placeholder="AWS Cloud Practitioner, NPTEL Java">
+
+            </div>
+
+        </div>
+
+        <div class="resume-box">
+
+            <input
+                    type="file"
+                    id="certificateImage"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    hidden>
+
+            <label for="certificateImage" class="upload-box">
+
+                <div class="upload-icon">🏆</div>
+
+                <h3>Upload Certificate</h3>
+
+                <p>
+                    Upload your certificate (PDF/JPG/PNG)<br>
+                    Maximum Size: 5 MB
+                </p>
+
+                <span class="upload-btn">
+                    Choose Certificate
+                </span>
+
+            </label>
+
+            <p class="resume-info" id="certificateInfo">
+                No certificate selected
+            </p>
+
+        </div>
+
+        <!-- ================= RESUME ================= -->
+
+        <div class="resume-box">
+
+            <h2 class="section-title">Resume</h2>
+
+            <input
+                    type="file"
+                    id="resume"
+                    accept=".pdf,.doc,.docx"
+                    hidden>
+
+            <label for="resume" class="upload-box">
+
+                <div class="upload-icon">📄</div>
+
+                <h3>Upload Resume</h3>
+
+                <p>
+                    PDF, DOC or DOCX<br>
+                    Maximum Size: 5 MB
+                </p>
+
+                <span class="upload-btn">
+                    Choose Resume
+                </span>
+
+            </label>
+
+            <p class="resume-info" id="resumeInfo">
+                No resume selected
+            </p>
+
+        </div>
+
+        <!-- ================= BUTTONS ================= -->
+
+        <div class="button-row">
+
+            <button
+                    type="submit"
+                    class="save-btn"
+                    id="saveButton">
+
+                Save & Continue
+
+            </button>
+
+            <button
+                    type="button"
+                    class="cancel-btn"
+                    id="cancelButton"
+                    onclick="goDashboard()">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+        <p id="message" class="message"></p>
+
+    </form>
+
+</div>
+
+
+
+<script>
+
+    // =====================================================
+    // PAGE LOAD
+    // =====================================================
+
+    window.addEventListener("DOMContentLoaded", loadProfile);
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        // =============================================
+        // Resume Upload
+        // =============================================
+
+        const resume = document.getElementById("resume");
+
+        if (resume) {
+            resume.addEventListener("change", function () {
+
+                document.getElementById("resumeInfo").textContent =
+                    this.files.length > 0
+                        ? this.files[0].name
+                        : "No resume selected";
+
+            });
+        }
+
+        // =============================================
+        // Certificate Upload
+        // =============================================
+
+        const certificate =
+            document.getElementById("certificateImage");
+
+        if (certificate) {
+            certificate.addEventListener("change", function () {
+
+                document.getElementById("certificateInfo").textContent =
+                    this.files.length > 0
+                        ? this.files[0].name
+                        : "No certificate selected";
+
+            });
+        }
+
+    });
+
+
+    // =====================================================
+    // LOAD PROFILE
+    // =====================================================
+
+    async function loadProfile() {
+
+        const studentEmail =
+            sessionStorage.getItem("studentEmail");
+
+        if (!studentEmail) {
+
+            alert("Session expired. Please login again.");
+            window.location.href = "index.html";
+            return;
+
+        }
+
+        try {
+
+            const response = await fetch(
+                "/api/students1/profile/email/" +
+                encodeURIComponent(studentEmail)
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to load profile.");
+            }
+
+            const data = await response.json();
+
+            console.log("Profile loaded:", data);
+
+            // =============================================
+            // BASIC DETAILS
+            // =============================================
+
+            document.getElementById("registerNumber").value =
+                data.registerNumber || "";
+
+            document.getElementById("name").value =
+                data.name || "";
+
+            document.getElementById("email").value =
+                data.email || "";
+
+            document.getElementById("phone").value =
+                data.phone || "";
+
+            // =============================================
+            // ACADEMIC DETAILS
+            // =============================================
+
+            document.getElementById("department").value =
+                data.department || "";
+
+            document.getElementById("college").value =
+                data.college ||
+                "Avinashilingam Institute for Home Science and Higher Education for Women";
+
+            document.getElementById("yearOfStudy").value =
+                data.yearOfStudy || "";
+
+            document.getElementById("cgpa").value =
+                data.cgpa ?? "";
+
+            document.getElementById("graduationYear").value =
+                data.graduationYear ?? "";
+
+            // =============================================
+            // SKILLS
+            // =============================================
+
+            const selectedSkills = (data.skills || "")
+                .split(",")
+                .map(skill => skill.trim())
+                .filter(skill => skill.length > 0);
+
+            // First clear every checkbox
+            document.querySelectorAll(
+                '#skillOptions input[type="checkbox"]'
+            ).forEach(checkbox => {
+
+                checkbox.checked = false;
+
+            });
+
+            // Then select only the skills stored in DB
+            document.querySelectorAll(
+                '#skillOptions input[type="checkbox"]'
+            ).forEach(checkbox => {
+
+                checkbox.checked =
+                    selectedSkills.includes(
+                        checkbox.value.trim()
+                    );
+
+            });
+
+            // IMPORTANT:
+            // Do NOT automatically put old custom skills here.
+            // User can enter new skills manually if needed.
+
+            document.getElementById("customSkill").value = "";
+
+            // =============================================
+            // CERTIFICATION
+            // =============================================
+
+            document.getElementById("certificateName").value =
+                data.certificateName || "";
+
+            // =============================================
+            // RESUME STATUS
+            // =============================================
+
+            document.getElementById("resumeInfo").textContent =
+                data.resumePath
+                    ? "Resume already uploaded. Upload a new one only if you wish to replace it."
+                    : "No resume selected";
+
+            // =============================================
+            // CERTIFICATE STATUS
+            // =============================================
+
+            document.getElementById("certificateInfo").textContent =
+                data.certificateName
+                    ? "Certificate already uploaded. Upload a new one only if you wish to replace it."
+                    : "No certificate selected";
+
+            // =============================================
+            // PROFILE MODE
+            // =============================================
+
+            if (data.profileCompleted) {
+
+                setEditMode();
+
+            } else {
+
+                setCompleteMode();
+
+            }
+
+        } catch (error) {
+
+            console.error("Profile loading error:", error);
+
+            document.getElementById("message").textContent =
+                "Unable to load your profile. Please try again.";
+
+        }
+
+    }
+
+
+    // =====================================================
+    // COMPLETE MODE
+    // =====================================================
+
+    function setCompleteMode() {
+
+        document.getElementById("pageTitle").textContent =
+            "Complete Your Profile";
+
+        document.getElementById("pageDescription").textContent =
+            "Please provide your personal, academic, skills, certifications and resume details to continue.";
+
+        document.getElementById("saveButton").textContent =
+            "Save & Continue";
+
+        document.getElementById("cancelButton").style.display =
+            "none";
+
+    }
+
+
+    // =====================================================
+    // EDIT MODE
+    // =====================================================
+
+    function setEditMode() {
+
+        document.getElementById("pageTitle").textContent =
+            "Edit Your Profile";
+
+        document.getElementById("pageDescription").textContent =
+            "Update only the details you want to change.";
+
+        document.getElementById("saveButton").textContent =
+            "Save Changes";
+
+        document.getElementById("cancelButton").style.display =
+            "block";
+
+    }
+
+
+    // =====================================================
+    // SAVE / UPDATE PROFILE
+    // =====================================================
+
+    async function saveProfile(event) {
+
+        event.preventDefault();
+
+        const registerNumber =
+            document.getElementById("registerNumber").value.trim();
+
+        if (!registerNumber) {
+
+            alert("Unable to identify your account. Please login again.");
+            window.location.href = "index.html";
+            return;
+
+        }
+
+        // =============================================
+        // CREATE FORM DATA
+        // =============================================
+
+        const formData = new FormData();
+
+        // =============================================
+        // BASIC DETAILS
+        // =============================================
+
+        formData.append(
+            "registerNumber",
+            registerNumber
+        );
+
+        formData.append(
+            "name",
+            document.getElementById("name").value.trim()
+        );
+
+        formData.append(
+            "email",
+            document.getElementById("email").value.trim()
+        );
+
+        formData.append(
+            "phone",
+            document.getElementById("phone").value.trim()
+        );
+
+        // =============================================
+        // ACADEMIC DETAILS
+        // =============================================
+
+        formData.append(
+            "department",
+            document.getElementById("department").value
+        );
+
+        formData.append(
+            "college",
+            document.getElementById("college").value
+        );
+
+        formData.append(
+            "yearOfStudy",
+            document.getElementById("yearOfStudy").value
+        );
+
+        formData.append(
+            "cgpa",
+            document.getElementById("cgpa").value
+        );
+
+        formData.append(
+            "graduationYear",
+            document.getElementById("graduationYear").value
+        );
+
+        // =============================================
+        // SKILLS
+        // =============================================
+
+        const selectedSkills = Array.from(
+            document.querySelectorAll(
+                '#skillOptions input[type="checkbox"]:checked'
+            )
+        ).map(checkbox => checkbox.value.trim());
+
+        const customSkillText =
+            document.getElementById("customSkill").value.trim();
+
+        let allSkills = [...selectedSkills];
+
+        // Add newly entered custom skills
+        if (customSkillText) {
+
+            const customSkills = customSkillText
+                .split(",")
+                .map(skill => skill.trim())
+                .filter(skill => skill.length > 0);
+
+            allSkills = [
+                ...allSkills,
+                ...customSkills
+            ];
+
+        }
+
+        // IMPORTANT:
+        // This completely replaces the old skills in DB.
+        formData.append(
+            "skills",
+            allSkills.join(",")
+        );
+
+        // =============================================
+        // CERTIFICATION
+        // =============================================
+
+        formData.append(
+            "certificateName",
+            document.getElementById("certificateName").value.trim()
+        );
+
+        // =============================================
+        // RESUME
+        // =============================================
+
+        const resume =
+            document.getElementById("resume").files[0];
+
+        if (resume) {
+
+            formData.append(
+                "resume",
+                resume
+            );
+
+        }
+
+        // =============================================
+        // SAVE BUTTON
+        // =============================================
+
+        const message =
+            document.getElementById("message");
+
+        const saveButton =
+            document.getElementById("saveButton");
+
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving...";
+
+        message.textContent = "";
+
+        // =============================================
+        // SEND TO SPRING BOOT
+        // =============================================
+
+        try {
+
+            const response = await fetch(
+                "/api/students1/profile",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const result = await response.json();
+
+            console.log("Save response:", result);
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to save profile."
+                );
+
+            }
+
+            // =============================================
+            // UPDATE SESSION EMAIL
+            // =============================================
+
+            const updatedEmail =
+                document.getElementById("email").value.trim();
+
+            sessionStorage.setItem(
+                "studentEmail",
+                updatedEmail
+            );
+
+            sessionStorage.setItem(
+                "registerNumber",
+                registerNumber
+            );
+
+            // =============================================
+            // SUCCESS
+            // =============================================
+
+            message.textContent =
+                "Profile saved successfully!";
+
+            message.style.color = "#16a34a";
+
+            saveButton.textContent =
+                "Saved ✓";
+
+            // =============================================
+            // GO TO DASHBOARD
+            // =============================================
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "student-dashboard.html";
+
+            }, 700);
+
+        } catch (error) {
+
+            console.error(
+                "Profile save error:",
+                error
+            );
+
+            message.textContent =
+                error.message ||
+                "Unable to save profile.";
+
+            message.style.color = "#dc2626";
+
+            saveButton.disabled = false;
+
+            saveButton.textContent =
+                "Save Changes";
+
+        }
+
+    }
+
+
+    // =====================================================
+    // CANCEL
+    // =====================================================
+
+    function goDashboard() {
+
+        window.location.href =
+            "student-dashboard.html";
+
+    }
+
+</script>
+</body>
+
+</html>

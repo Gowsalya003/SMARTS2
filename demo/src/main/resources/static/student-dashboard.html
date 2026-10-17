@@ -1,0 +1,2420 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard | Skill Mapping</title>
+
+    <!-- Nunito Sans -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600;700;800;900&display=swap"
+          rel="stylesheet">
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+
+        body {
+            min-height: 100vh;
+            background: #f5f7fb;
+            color: #0f172a;
+        }
+
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+        }
+
+
+        /* =========================
+           MENU BUTTON
+        ========================= */
+
+        .menu-btn {
+            width: 42px;
+            height: 42px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+
+        .menu-btn:hover {
+            background: #f1f5f9;
+        }
+
+
+        .menu-btn span {
+            width: 21px;
+            height: 2px;
+            background: #334155;
+            border-radius: 5px;
+        }
+
+
+        /* =========================
+           BRAND
+        ========================= */
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 15px;
+        }
+
+
+        .logo-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1e40af
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            font-family:
+                "Nunito Sans",
+                sans-serif;
+
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 1px;
+
+            box-shadow:
+                0 4px 12px
+                rgba(37, 99, 235, 0.22);
+
+            transition: 0.25s;
+        }
+
+
+        .logo-circle:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 6px 16px
+                rgba(37, 99, 235, 0.28);
+        }
+
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+
+        /* =========================
+           PROFILE
+        ========================= */
+
+        .student-profile {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+
+            background: #dbeafe;
+            color: #2563eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+
+            border: 1px solid #bfdbfe;
+        }
+
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+
+        .profile-role {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            top: 72px;
+            left: 0;
+            bottom: 0;
+
+            width: 250px;
+
+            background: white;
+            border-right: 1px solid #e5e7eb;
+
+            padding: 25px 15px;
+
+            transform: translateX(-100%);
+
+            transition:
+                transform 0.3s ease;
+
+            z-index: 90;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .nav-item {
+            width: 100%;
+            height: 48px;
+
+            border: none;
+            background: transparent;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 0 14px;
+
+            color: #475569;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            margin-bottom: 5px;
+
+            text-align: left;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: #2563eb;
+        }
+
+
+        .nav-item.active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           LOGOUT
+        ========================= */
+
+        .logout-section {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+
+        .logout-btn {
+            width: 100%;
+            height: 48px;
+
+            border: none;
+            background: transparent;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 0 14px;
+
+            color: #dc2626;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .logout-btn:hover {
+            background: #fef2f2;
+        }
+
+
+        /* =========================
+           OVERLAY
+        ========================= */
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+
+            background:
+                rgba(15, 23, 42, 0.25);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition: 0.3s;
+
+            z-index: 80;
+        }
+
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main-content {
+            padding:
+                112px 40px 50px;
+
+            max-width: 1250px;
+
+            margin: auto;
+        }
+
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome {
+            margin-bottom: 32px;
+        }
+
+
+        .welcome h1 {
+            font-size: 30px;
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+            letter-spacing: -0.5px;
+        }
+
+
+        .welcome h1 span {
+            color: #2563eb;
+        }
+
+
+        .welcome p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           SECTION HEADING
+        ========================= */
+
+        .section-heading {
+            margin-bottom: 20px;
+        }
+
+
+        .section-heading h2 {
+            font-size: 20px;
+            font-weight: 700;
+
+            margin-bottom: 6px;
+
+            color: #0f172a;
+        }
+
+
+        .section-heading p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           OPPORTUNITIES
+        ========================= */
+
+        .opportunities {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .opportunity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+
+        /* =========================
+           DYNAMIC ASSESSMENT CARD
+        ========================= */
+
+        .opportunity-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 16px 18px;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 10px;
+
+            transition: 0.2s;
+
+            background: white;
+        }
+
+
+        .opportunity-item:hover {
+            border-color: #bfdbfe;
+            background: #f8fbff;
+
+            transform: translateY(-1px);
+        }
+
+
+        .opportunity-left {
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            min-width: 0;
+        }
+
+
+        .assessment-icon {
+            width: 45px;
+            height: 45px;
+
+            min-width: 45px;
+
+            border-radius: 10px;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+
+        .opportunity-info {
+            min-width: 0;
+        }
+
+
+        .opportunity-item h3 {
+            font-size: 15px;
+            font-weight: 700;
+
+            margin-bottom: 5px;
+
+            color: #1e293b;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .opportunity-company {
+            color: #2563eb;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            margin-bottom: 4px;
+        }
+
+
+        .opportunity-meta {
+            color: #64748b;
+
+            font-size: 12px;
+
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .opportunity-meta span {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 4px;
+        }
+
+
+        /* =========================
+           VIEW BUTTON
+        ========================= */
+
+        .opportunity-view {
+            color: white;
+
+            background: #2563eb;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            padding: 9px 16px;
+
+            border-radius: 8px;
+
+            transition: 0.2s;
+
+            border: none;
+
+            white-space: nowrap;
+
+            margin-left: 15px;
+        }
+
+
+        .opportunity-view:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading-message {
+            text-align: center;
+
+            padding: 30px 20px;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        .loading-spinner {
+            width: 28px;
+            height: 28px;
+
+            border: 3px solid #dbeafe;
+
+            border-top-color: #2563eb;
+
+            border-radius: 50%;
+
+            margin: 0 auto 12px;
+
+            animation: spin 0.8s linear infinite;
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            text-align: center;
+
+            padding: 35px 20px;
+
+            color: #64748b;
+        }
+
+
+        .empty-icon {
+            width: 55px;
+            height: 55px;
+
+            border-radius: 50%;
+
+            background: #f1f5f9;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 12px;
+
+            font-size: 24px;
+        }
+
+
+        .empty-state h3 {
+            color: #334155;
+
+            font-size: 15px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .empty-state p {
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================= */
+
+        .error-message {
+            background: #fef2f2;
+
+            border: 1px solid #fecaca;
+
+            color: #b91c1c;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            font-size: 13px;
+        }
+
+
+        .retry-btn {
+            margin-top: 10px;
+
+            border: none;
+
+            background: #dc2626;
+
+            color: white;
+
+            padding: 8px 14px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        .retry-btn:hover {
+            background: #b91c1c;
+        }
+
+
+        /* =========================
+           SKILL ANALYSIS
+        ========================= */
+
+        .skills-section {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .skills-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+
+        .skill-item {
+            padding: 16px;
+
+            background: #f8fafc;
+
+            border: 1px solid #eef2f7;
+
+            border-radius: 10px;
+
+            transition: 0.2s;
+        }
+
+
+        .skill-item:hover {
+            background: #f1f5f9;
+
+            border-color: #dbeafe;
+        }
+
+
+        .skill-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .skill-name {
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #334155;
+        }
+
+
+        .skill-level {
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: #2563eb;
+
+            background: #eff6ff;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+        }
+
+
+        .skill-details {
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .skill-progress {
+            width: 100%;
+
+            height: 8px;
+
+            background: #e2e8f0;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .skill-progress-bar {
+            height: 100%;
+
+            background: #2563eb;
+
+            border-radius: 20px;
+
+            transition: width 0.5s ease;
+        }
+
+
+        .skill-gap {
+            margin-top: 9px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: #dc2626;
+        }
+
+
+        .requirement-met {
+            color: #16a34a;
+        }
+
+
+        /* =========================
+           RECOMMENDED COURSES
+        ========================= */
+
+        .courses-section {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .course-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(260px, 1fr)
+                );
+
+            gap: 15px;
+        }
+
+
+        .course-card {
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            background: white;
+
+            transition: 0.2s;
+        }
+
+
+        .course-card:hover {
+            border-color: #bfdbfe;
+
+            background: #f8fbff;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 6px 18px
+                rgba(15, 23, 42, 0.06);
+        }
+
+
+        .course-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 10px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 19px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .course-card h3 {
+            font-size: 15px;
+
+            color: #1e293b;
+
+            margin-bottom: 6px;
+
+            font-weight: 700;
+        }
+
+
+        .course-category {
+            color: #2563eb;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            margin-bottom: 10px;
+        }
+
+
+        .course-description {
+            color: #64748b;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            margin-bottom: 13px;
+        }
+
+
+        .course-meta {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .course-badge {
+            background: #f1f5f9;
+
+            color: #475569;
+
+            border-radius: 20px;
+
+            padding: 5px 9px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        .course-match {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding-top: 11px;
+
+            border-top: 1px solid #eef2f7;
+        }
+
+
+        .course-match-label {
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        .course-match-score {
+            color: #16a34a;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           AI EMPTY STATE
+        ========================= */
+
+        .analysis-empty {
+            text-align: center;
+
+            padding: 25px 20px;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+
+        .analysis-empty-icon {
+            font-size: 28px;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .main-content {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+
+            .profile-details {
+                display: none;
+            }
+
+
+            .brand-name {
+                font-size: 16px;
+            }
+
+
+            .opportunity-item {
+                align-items: flex-start;
+
+                gap: 12px;
+            }
+
+
+            .opportunity-left {
+                align-items: flex-start;
+            }
+
+
+            .opportunity-item h3 {
+                white-space: normal;
+            }
+
+
+            .opportunity-view {
+                padding: 7px 10px;
+
+                margin-left: 0;
+            }
+
+
+            .skill-top {
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     TOP BAR
+========================= -->
+
+<header class="topbar">
+
+    <button
+            class="menu-btn"
+            onclick="toggleSidebar()">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+
+    <div class="brand">
+
+        <div class="logo-circle">
+            <span>SM</span>
+        </div>
+
+        <div class="brand-name">
+            Skill Mapping
+        </div>
+
+    </div>
+
+
+    <div class="student-profile">
+
+        <div
+                class="profile-avatar"
+                id="avatar">
+
+            S
+
+        </div>
+
+
+        <div class="profile-details">
+
+            <div
+                    class="profile-name"
+                    id="studentName">
+
+                Student
+
+            </div>
+
+
+            <div class="profile-role">
+
+                Student Account
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside
+        class="sidebar"
+        id="sidebar">
+
+
+    <button
+            class="nav-item active"
+            onclick="goDashboard()">
+
+        <span class="nav-icon">
+            🏠︎
+        </span>
+
+        Dashboard
+
+    </button>
+
+
+    <button
+            class="nav-item"
+            onclick="goProfile()">
+
+        <span class="nav-icon">
+            👤
+        </span>
+
+        Edit Profile
+
+    </button>
+
+
+    <button
+            class="nav-item"
+            onclick="goAssessments()">
+
+        <span class="nav-icon">
+            📋
+        </span>
+
+        Assessments
+
+    </button>
+
+
+    <div class="logout-section">
+
+        <button
+                class="logout-btn"
+                onclick="logout()">
+
+            <span class="nav-icon">
+                ↪
+            </span>
+
+            Logout
+
+        </button>
+
+    </div>
+
+
+</aside>
+
+
+<div
+        class="overlay"
+        id="overlay"
+        onclick="closeSidebar()">
+</div>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<main class="main-content">
+
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
+
+        <h1>
+
+            Welcome back,
+
+            <span id="welcomeName">
+                Student!
+            </span>
+
+        </h1>
+
+
+        <p>
+            Here's an overview of your skill mapping journey.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         OPPORTUNITIES
+    ========================= -->
+
+    <section class="opportunities">
+
+        <div class="section-heading">
+
+            <h2>
+                Opportunities
+            </h2>
+
+            <p>
+                Explore assessments posted by employers.
+            </p>
+
+        </div>
+
+
+        <div
+                class="opportunity-list"
+                id="assessmentList">
+
+            <div class="loading-message">
+
+                <div class="loading-spinner"></div>
+
+                Loading assessments...
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SKILL ANALYSIS
+    ========================= -->
+
+    <section class="skills-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Your Skill Analysis
+            </h2>
+
+            <p>
+                Your skills based on your published assessment results.
+            </p>
+
+        </div>
+
+
+        <div
+                class="skills-list"
+                id="skillsList">
+
+            <div class="loading-message">
+
+                <div class="loading-spinner"></div>
+
+                Loading your skill analysis...
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         RECOMMENDED COURSES
+    ========================= -->
+
+    <section class="courses-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Recommended Courses
+            </h2>
+
+            <p>
+                Courses recommended based on your current skill gaps.
+            </p>
+
+        </div>
+
+
+        <div
+                class="course-list"
+                id="courseList">
+
+            <div class="loading-message">
+
+                <div class="loading-spinner"></div>
+
+                Finding courses for you...
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+
+    /* =========================
+       STUDENT NAME
+    ========================= */
+
+    const storedName =
+        sessionStorage.getItem(
+            "studentName"
+        );
+
+
+    if (storedName) {
+
+        document
+            .getElementById("studentName")
+            .textContent = storedName;
+
+
+        document
+            .getElementById("welcomeName")
+            .textContent =
+            storedName + "!";
+
+
+        document
+            .getElementById("avatar")
+            .textContent =
+            storedName
+                .charAt(0)
+                .toUpperCase();
+
+    }
+
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    function toggleSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.toggle("active");
+
+
+        document
+            .getElementById("overlay")
+            .classList.toggle("active");
+
+    }
+
+
+    function closeSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.remove("active");
+
+
+        document
+            .getElementById("overlay")
+            .classList.remove("active");
+
+    }
+
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    function goDashboard() {
+
+        closeSidebar();
+
+    }
+
+
+    function goProfile() {
+
+        window.location.href =
+            "student-profile.html";
+
+    }
+
+
+    function goAssessments() {
+
+        window.location.href =
+            "assessments.html";
+
+    }
+
+
+    /* =========================
+       LOAD PUBLISHED ASSESSMENTS
+    ========================= */
+
+async function loadPublishedAssessments() {
+
+    const assessmentList =
+        document.getElementById(
+            "assessmentList"
+        );
+
+    const registerNumber =
+        sessionStorage.getItem(
+            "registerNumber"
+        );
+
+    if (!registerNumber) {
+
+        assessmentList.innerHTML = `
+
+            <div class="error-message">
+
+                Student register number is not available.
+
+                <br>
+
+                Please login again.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+        assessmentList.innerHTML = `
+
+            <div class="loading-message">
+
+                <div class="loading-spinner"></div>
+
+                Loading assessments...
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/assessments/student/${registerNumber}/available`
+                );
+
+
+            const responseText =
+                await response.text();
+
+
+            let assessments = [];
+
+
+            try {
+
+                assessments =
+                    responseText
+                        ? JSON.parse(responseText)
+                        : [];
+
+            } catch (parseError) {
+
+                console.error(
+                    "Invalid JSON response:",
+                    responseText
+                );
+
+                throw new Error(
+                    "Invalid response received from server."
+                );
+
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load assessments."
+                );
+
+            }
+
+
+            if (!Array.isArray(assessments)) {
+
+                if (
+                    assessments &&
+                    Array.isArray(
+                        assessments.content
+                    )
+                ) {
+
+                    assessments =
+                        assessments.content;
+
+                } else {
+
+                    assessments = [];
+
+                }
+
+            }
+
+
+            if (assessments.length === 0) {
+
+                assessmentList.innerHTML = `
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            📋
+                        </div>
+
+                        <h3>
+                            No assessments available
+                        </h3>
+
+                        <p>
+                            Employer assessments will appear here
+                            when they are published.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            assessmentList.innerHTML = "";
+
+
+            assessments.forEach(
+                function (assessment) {
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    item.className =
+                        "opportunity-item";
+
+
+                    const id =
+                        assessment.id;
+
+
+                    const title =
+                        assessment.title ||
+                        assessment.assessmentTitle ||
+                        "Untitled Assessment";
+
+
+                    const category =
+                        assessment.category ||
+                        "Assessment";
+
+
+                    const company =
+                        assessment.companyName ||
+                        assessment.employerName ||
+                        assessment.company ||
+                        "Company";
+
+
+                    const duration =
+                        assessment.duration ||
+                        "Not specified";
+
+
+                    item.innerHTML = `
+
+                        <div class="opportunity-left">
+
+                            <div class="assessment-icon">
+                                📋
+                            </div>
+
+
+                            <div class="opportunity-info">
+
+                                <h3>
+                                    ${escapeHtml(title)}
+                                </h3>
+
+
+                                <div class="opportunity-company">
+
+                                    ${escapeHtml(company)}
+
+                                </div>
+
+
+                                <div class="opportunity-meta">
+
+                                    <span>
+                                        📚
+                                        ${escapeHtml(category)}
+                                    </span>
+
+
+                                    <span>
+                                        ⏱
+                                        ${escapeHtml(String(duration))}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                                class="opportunity-view"
+                                onclick="takeAssessment(${id})">
+
+                            Take Assessment
+
+                        </button>
+
+                    `;
+
+
+                    assessmentList.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Assessment loading error:",
+                error
+            );
+
+
+            assessmentList.innerHTML = `
+
+                <div class="error-message">
+
+                    Unable to load assessments.
+
+                    <br>
+
+                    Please make sure the Spring Boot
+                    server is running.
+
+                    <br>
+
+                    <button
+                            class="retry-btn"
+                            onclick="loadPublishedAssessments()">
+
+                        Retry
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =========================
+       LOAD SKILL MAPPING
+    ========================= */
+
+    async function loadSkillMapping() {
+
+        const skillsList =
+            document.getElementById(
+                "skillsList"
+            );
+
+        const courseList =
+            document.getElementById(
+                "courseList"
+            );
+
+
+        const registerNumber =
+            sessionStorage.getItem(
+                "registerNumber"
+            );
+
+
+        /*
+         * Make sure register number exists.
+         */
+
+        if (!registerNumber) {
+
+            skillsList.innerHTML = `
+
+                <div class="analysis-empty">
+
+                    <div class="analysis-empty-icon">
+                        📊
+                    </div>
+
+                    <p>
+                        Student information is not available.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            courseList.innerHTML = `
+
+                <div class="analysis-empty">
+
+                    <div class="analysis-empty-icon">
+                        📚
+                    </div>
+
+                    <p>
+                        Student information is not available.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        try {
+
+            console.log(
+                "Loading skill mapping for:",
+                registerNumber
+            );
+
+
+            const response =
+                await fetch(
+                    "/api/assessment-collection/students1/"
+                    + encodeURIComponent(
+                        registerNumber
+                    )
+                );
+
+
+            const responseText =
+                await response.text();
+
+
+            let data;
+
+
+            try {
+
+                data =
+                    responseText
+                        ? JSON.parse(responseText)
+                        : {};
+
+            } catch (error) {
+
+                throw new Error(
+                    "Invalid skill mapping response."
+                );
+
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    "Unable to load skill mapping."
+                );
+
+            }
+
+
+            console.log(
+                "Skill mapping:",
+                data
+            );
+
+
+            /*
+             * Display skills.
+             */
+
+            displaySkills(
+                data.skills || [],
+                data.skillGaps || []
+            );
+
+
+            /*
+             * Display courses.
+             */
+
+            displayRecommendedCourses(
+                data.recommendedCourses || []
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Skill mapping error:",
+                error
+            );
+
+
+            skillsList.innerHTML = `
+
+                <div class="analysis-empty">
+
+                    <div class="analysis-empty-icon">
+                        📊
+                    </div>
+
+                    <p>
+                        Skill analysis is not available yet.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            courseList.innerHTML = `
+
+                <div class="analysis-empty">
+
+                    <div class="analysis-empty-icon">
+                        📚
+                    </div>
+
+                    <p>
+                        Course recommendations are not available yet.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =========================
+       DISPLAY SKILLS
+    ========================= */
+
+    function displaySkills(
+        skills,
+        skillGaps
+    ) {
+
+        const skillsList =
+            document.getElementById(
+                "skillsList"
+            );
+
+
+        if (
+            !skills ||
+            skills.length === 0
+        ) {
+
+            skillsList.innerHTML = `
+
+                <div class="analysis-empty">
+
+                    <div class="analysis-empty-icon">
+                        📊
+                    </div>
+
+                    <p>
+                        Complete an assessment and wait for
+                        the employer to publish your score.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        skillsList.innerHTML = "";
+
+
+        skills.forEach(
+            function (skill) {
+
+                const gap =
+                    skillGaps.find(
+                        function (item) {
+
+                            return item.skill ===
+                                skill.skill;
+
+                        }
+                    );
+
+
+                const requiredScore =
+                    gap
+                        ? Number(
+                            gap.requiredScore || 0
+                        )
+                        : 0;
+
+
+                const studentScore =
+                    Number(
+                        skill.score || 0
+                    );
+
+
+                const gapValue =
+                    gap
+                        ? Number(
+                            gap.gap || 0
+                        )
+                        : 0;
+
+
+                const status =
+                    gap
+                        ? gap.status
+                        : "";
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "skill-item";
+
+
+                item.innerHTML = `
+
+                    <div class="skill-top">
+
+                        <span class="skill-name">
+
+                            ${escapeHtml(
+                                skill.skill
+                            )}
+
+                        </span>
+
+
+                        <span class="skill-level">
+
+                            ${escapeHtml(
+                                skill.skillLevel ||
+                                "Not available"
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="skill-details">
+
+                        <span>
+                            Score:
+                            ${studentScore.toFixed(0)}%
+                        </span>
+
+
+                        <span>
+                            Required:
+                            ${requiredScore.toFixed(0)}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="skill-progress">
+
+                        <div
+                                class="skill-progress-bar"
+                                style="width:${Math.min(
+                                    100,
+                                    Math.max(
+                                        0,
+                                        studentScore
+                                    )
+                                )}%">
+
+                        </div>
+
+                    </div>
+
+
+                    ${
+                        gapValue > 0
+                            ? `
+                                <div class="skill-gap">
+
+                                    Skill Gap:
+                                    ${gapValue.toFixed(0)}%
+
+                                </div>
+                              `
+                            : `
+                                <div class="skill-gap requirement-met">
+
+                                    ✓ Requirement Met
+
+                                </div>
+                              `
+                    }
+
+                `;
+
+
+                skillsList.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       DISPLAY COURSES
+    ========================= */
+
+    function displayRecommendedCourses(
+        courses
+    ) {
+
+        const courseList =
+            document.getElementById(
+                "courseList"
+            );
+
+
+        if (
+            !courses ||
+            courses.length === 0
+        ) {
+
+            courseList.innerHTML = `
+
+                <div class="analysis-empty">
+
+                    <div class="analysis-empty-icon">
+                        📚
+                    </div>
+
+                    <p>
+                        No course recommendations are available
+                        right now.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        courseList.innerHTML = "";
+
+
+        courses.forEach(
+            function (course) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "course-card";
+
+
+                const matchScore =
+                    Number(
+                        course.matchScore || 0
+                    );
+
+
+                card.innerHTML = `
+
+                    <div class="course-icon">
+                        📚
+                    </div>
+
+
+                    <h3>
+
+                        ${escapeHtml(
+                            course.courseName ||
+                            "Recommended Course"
+                        )}
+
+                    </h3>
+
+
+                    <div class="course-category">
+
+                        ${escapeHtml(
+                            course.category ||
+                            "Course"
+                        )}
+
+                    </div>
+
+
+                    ${
+                        course.description
+                            ? `
+                                <div class="course-description">
+
+                                    ${escapeHtml(
+                                        course.description
+                                    )}
+
+                                </div>
+                              `
+                            : ""
+                    }
+
+
+                    <div class="course-meta">
+
+                        ${
+                            course.level
+                                ? `
+                                    <span class="course-badge">
+
+                                        ${escapeHtml(
+                                            course.level
+                                        )}
+
+                                    </span>
+                                  `
+                                : ""
+                        }
+
+
+                        ${
+                            course.duration
+                                ? `
+                                    <span class="course-badge">
+
+                                        ${escapeHtml(
+                                            course.duration
+                                        )}
+
+                                    </span>
+                                  `
+                                : ""
+                        }
+
+
+                        ${
+                            course.gap !== undefined
+                                ? `
+                                    <span class="course-badge">
+
+                                        Gap:
+                                        ${Number(
+                                            course.gap
+                                        ).toFixed(0)}%
+
+                                    </span>
+                                  `
+                                : ""
+                        }
+
+                    </div>
+
+
+                    <div class="course-match">
+
+                        <span class="course-match-label">
+
+                            Match
+
+                        </span>
+
+
+                        <span class="course-match-score">
+
+                            ${matchScore.toFixed(0)}%
+
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                courseList.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    function escapeHtml(value) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            value ?? "";
+
+
+        return div.innerHTML;
+
+    }
+
+
+    /* =========================
+       TAKE ASSESSMENT
+    ========================= */
+
+    function takeAssessment(id) {
+
+        if (!id) {
+
+            alert(
+                "Assessment ID is missing."
+            );
+
+            return;
+
+        }
+
+
+        window.location.href =
+            "take-assessment.html?id=" +
+            encodeURIComponent(id);
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    function logout() {
+
+        sessionStorage.clear();
+
+        window.location.href =
+            "index.html";
+
+    }
+
+
+    /* =========================
+       LOAD DATA WHEN PAGE OPENS
+    ========================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            loadPublishedAssessments();
+
+            loadSkillMapping();
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
+
