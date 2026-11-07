@@ -1,277 +1,996 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMARTS - AI Driven Placement & Skill Mapping Portal</title>
-    <!-- Import Google Fonts: Urbanist & Poppins -->
+    <title>SMARTS | Your Career Journey Starts Here</title>
+
+    <!-- Fonts: unchanged -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+
     <style>
-        /* ==========================================================
-           COLOR PALETTE:
-           - Primary Deep Navy: #03045e
-           - Secondary Blue:    #023e8a
-           - Accent Blue:       #0077b6
-           - Background:        #ffffff (Pure White)
-           - Text Main:         #0f172a
-           - Text Muted:        #64748b
-        ========================================================== */
+        :root {
+            --primary: #03045e;
+            --secondary: #023e8a;
+            --accent: #0077b6;
+            --light-blue: #caf0f8;
+            --white: #ffffff;
+            --background: #f8fbff;
+            --text: #172554;
+            --muted: #64748b;
+            --shadow: 0 10px 35px rgba(3, 4, 94, 0.08);
+        }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Poppins", "Urbanist", sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            min-height: 100vh;
-            width: 100vw;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
-            padding: 50px 20px;
-            color: #0f172a;
+            font-family: 'Poppins', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        /* ==========================================================
-           ENTRANCE LOADING ANIMATION KEYFRAMES
-        ========================================================== */
-        .portal-wrapper {
-            width: 1100px;
-            max-width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(25px);
-            animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        button {
+            font-family: inherit;
         }
 
-        .institution-tag {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #0077b6;
-            margin-bottom: 16px;
-            background: rgba(0, 119, 182, 0.08);
-            padding: 6px 18px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 119, 182, 0.2);
-            opacity: 0;
-            animation: fadeIn 0.8s ease 0.2s forwards;
-        }
+        /* HEADER */
 
-        /* GLOWING ANIMATED SMARTS TEXT */
-        .glowing-brand {
-            font-family: "Urbanist", sans-serif;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            animation: colorShift 6s infinite alternate, fadeIn 0.8s ease 0.3s forwards;
-            opacity: 0;
-        }
-
-        @keyframes colorShift {
-            0% {
-                color: #03045e;
-                text-shadow: 0 0 15px rgba(3, 4, 94, 0.25);
-            }
-            50% {
-                color: #0077b6;
-                text-shadow: 0 0 20px rgba(0, 119, 182, 0.35);
-            }
-            100% {
-                color: #023e8a;
-                text-shadow: 0 0 15px rgba(2, 62, 138, 0.3);
-            }
-        }
-
-        .hero-title {
-            font-family: "Urbanist", sans-serif;
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.2;
-            max-width: 920px;
-            margin-bottom: 16px;
-            letter-spacing: -1px;
-            color: #03045e;
-            opacity: 0;
-            animation: fadeIn 0.8s ease 0.4s forwards;
-        }
-
-        .hero-subtitle {
-            font-size: 15px;
-            font-weight: 400;
-            color: #64748b;
-            max-width: 760px;
-            line-height: 1.6;
-            margin-bottom: 50px;
-            opacity: 0;
-            animation: fadeIn 0.8s ease 0.5s forwards;
-        }
-
-        /* THREE EQUAL RESPECT CARDS GRID WITH STAGGERED ENTRANCE */
-        .portals-grid {
+        header {
             width: 100%;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            text-align: left;
-            opacity: 0;
-            animation: fadeIn 0.8s ease 0.6s forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        .portal-card {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 34px 28px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 18px 7%;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.96);
+            transition: 0.3s ease;
+        }
+
+        header.sticky {
+            box-shadow: var(--shadow);
+            padding-top: 13px;
+            padding-bottom: 13px;
+        }
+
+        .logo {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 30px;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .navbar a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #334155;
             position: relative;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-            border: 1px solid #e2e8f0;
+            transition: 0.3s;
         }
 
-        .portal-card:hover {
-            transform: translateY(-8px);
-            background: #ffffff;
-            box-shadow: 0 20px 45px rgba(3, 4, 94, 0.12);
-            border-color: #03045e;
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: 0.3s;
         }
 
-        .portal-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            background: rgba(3, 4, 94, 0.08);
-            color: #03045e;
+        .navbar a:hover,
+        .navbar a.active {
+            color: var(--accent);
+        }
+
+        .navbar a:hover::after,
+        .navbar a.active::after {
+            width: 100%;
+        }
+
+        .menu-icon {
+            font-size: 27px;
+            color: var(--primary);
+            cursor: pointer;
+            display: none;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 100vh;
+            padding: 150px 7% 90px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
-            margin-bottom: 24px;
+            text-align: center;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(202, 240, 248, 0.7), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(144, 224, 239, 0.35), transparent 30%),
+                linear-gradient(135deg, #ffffff, #f0f9ff);
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 9px 20px;
+            border-radius: 30px;
+            background: #e0f2fe;
+            color: var(--secondary);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .hero-tag i {
+            margin-right: 6px;
+        }
+
+        .hero h1 {
+            font-family: 'Urbanist', sans-serif;
+            font-size: clamp(42px, 6vw, 72px);
+            line-height: 1.12;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 35px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(3, 4, 94, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .btn-outline {
+            border: 1px solid #bfdbfe;
+            color: var(--primary);
+            background: white;
+        }
+
+        .btn-outline:hover {
+            background: #eff6ff;
+            transform: translateY(-4px);
+        }
+
+        /* SECTION COMMON */
+
+        section {
+            padding: 90px 7%;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-heading span {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            font-family: 'Urbanist', sans-serif;
+            font-size: clamp(32px, 4vw, 45px);
+            color: var(--primary);
+            font-weight: 800;
+            margin-top: 10px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 12px;
+        }
+
+        /* PORTALS */
+
+        .portals {
+            background: white;
+        }
+
+        .portal-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        .portal-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 38px 28px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(3, 4, 94, 0.04);
+            transition: 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 0;
+            background: var(--accent);
+            transition: 0.35s;
+        }
+
+        .portal-card:hover::before {
+            width: 100%;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: #bfdbfe;
+        }
+
+        .portal-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 20px;
+            background: #e0f2fe;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            margin: 0 auto 22px;
             transition: 0.3s;
         }
 
         .portal-card:hover .portal-icon {
-            background: #03045e;
-            color: #ffffff;
+            background: var(--primary);
+            color: white;
+            transform: rotate(-5deg);
         }
 
         .portal-card h3 {
-            font-family: "Urbanist", sans-serif;
-            font-size: 20px;
-            font-weight: 800;
-            color: #03045e;
-            margin-bottom: 10px;
+            font-family: 'Urbanist', sans-serif;
+            font-size: 25px;
+            color: var(--primary);
+            margin-bottom: 12px;
         }
 
         .portal-card p {
             font-size: 13px;
-            color: #64748b;
-            line-height: 1.6;
-            margin-bottom: 28px;
+            line-height: 1.8;
+            color: var(--muted);
+            margin-bottom: 25px;
         }
 
-        .portal-action-btn {
+        .portal-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            color: var(--accent);
             font-size: 14px;
-            font-weight: 700;
-            color: #03045e;
-            background: none;
-            border: none;
-            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .portal-link:hover {
+            gap: 14px;
+            color: var(--primary);
+        }
+
+
+        /* IMAGE-BASED PORTAL CARDS */
+        .portal-card {
             padding: 0;
-            transition: gap 0.2s ease;
         }
 
-        .portal-card:hover .portal-action-btn {
-            gap: 12px;
-            color: #0077b6;
+        .portal-image {
+            width: 100%;
+            height: 175px;
+            overflow: hidden;
+            background: #e0f2fe;
         }
 
-        @media(max-width: 900px) {
-            .hero-title { font-size: 34px; }
-            .portals-grid { grid-template-columns: 1fr; gap: 16px; }
-            body { padding: 30px 16px; }
+        .portal-image img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .portal-card:hover .portal-image img {
+            transform: scale(1.07);
+        }
+
+        .portal-card-content {
+            padding: 25px 28px 30px;
+        }
+
+        .portal-card-content .portal-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 16px;
+            font-size: 29px;
+            margin-bottom: 17px;
+        }
+
+        @media (max-width: 480px) {
+            .portal-image {
+                height: 185px;
+            }
+        }
+
+        /* ABOUT */
+
+        .about {
+            background: var(--background);
+        }
+
+        .about-container {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .about-content h2 {
+            font-family: 'Urbanist', sans-serif;
+            font-size: clamp(32px, 4vw, 43px);
+            color: var(--primary);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .about-content h2 span {
+            color: var(--accent);
+        }
+
+        .about-content p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 2;
+            margin-bottom: 18px;
+        }
+
+        .about-features {
+            display: grid;
+            gap: 16px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(3, 4, 94, 0.04);
+            transition: 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateX(7px);
+        }
+
+        .feature i {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #e0f2fe;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            flex-shrink: 0;
+        }
+
+        .feature h4 {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .feature p {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #03045e;
+            color: white;
+            padding: 35px 7%;
+            text-align: center;
+        }
+
+        footer h3 {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #cbd5e1;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .footer-social {
+            margin: 18px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 18px;
+            margin-top: 20px;
+        }
+
+        /* SCROLL TO TOP */
+
+        .scroll-top {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: 0.3s;
+        }
+
+        .scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            background: var(--accent);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 950px) {
+            .portal-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-container {
+                gap: 35px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 16px 6%;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            .navbar {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+                padding: 0 7%;
+                max-height: 0;
+                overflow: hidden;
+                transition: 0.35s ease;
+                box-shadow: 0 10px 15px rgba(3, 4, 94, 0.05);
+            }
+
+            .navbar.open {
+                max-height: 350px;
+                padding-top: 15px;
+                padding-bottom: 20px;
+            }
+
+            .navbar a {
+                padding: 13px 0;
+                width: 100%;
+            }
+
+            .navbar a::after {
+                display: none;
+            }
+
+            .hero {
+                min-height: 90vh;
+                padding-top: 130px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .portal-container {
+                grid-template-columns: 1fr;
+                max-width: 430px;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section {
+                padding: 70px 6%;
+            }
+
+            .hero {
+                padding-left: 6%;
+                padding-right: 6%;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                max-width: 260px;
+                justify-content: center;
+            }
+
+            .logo {
+                font-size: 26px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="portal-wrapper">
-    <div class="institution-tag">Avinashilingam Institute for Home Science and Higher Education for Women</div>
-    <div class="glowing-brand">SMARTS Portal</div>
+<!-- HEADER -->
+<header id="header">
+    <a href="#home" class="logo">SMART<span>S.</span></a>
 
-    <h1 class="hero-title">AI Driven Skill Mapping, Augmentation & Recruitment Tracking System</h1>
-    <p class="hero-subtitle">
-        Connecting industrial corporate requirements with student evaluations, AI skill classification (High, Medium, Low), and targeted career augmentation centers.
+    <i class="ri-menu-3-line menu-icon" id="menu-icon"></i>
+
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="active">Home</a>
+        <a href="#portals">Login</a>
+        <a href="#about">About</a>
+    </nav>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero" id="home">
+    <div class="hero-content">
+
+        <div class="hero-tag">
+            <i class="ri-rocket-line"></i>
+            Your Journey. Your Growth. Your Future.
+        </div>
+
+        <h1>
+            One Step for Every
+            <br>
+            <span class="typing"></span>
+        </h1>
+
+        <p>
+            Your journey towards career success starts here.
+            Discover your strengths, enhance your skills,
+            explore opportunities, and take the next step
+            towards the future you dream of.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#portals" class="btn btn-primary">
+                Get Started <i class="ri-arrow-right-line"></i>
+            </a>
+
+            <a href="#about" class="btn btn-outline">
+                Explore More <i class="ri-arrow-down-line"></i>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- LOGIN PORTALS -->
+<section class="portals" id="portals">
+
+    <div class="section-heading">
+        <span>Get Started</span>
+        <h2>Choose Your Portal</h2>
+        <p>Sign in to access your personalized SMARTS experience.</p>
+    </div>
+
+    <div class="portal-container">
+
+        <!-- STUDENT -->
+        <div class="portal-card">
+            <div class="portal-image">
+                <img src="student-placement-hero.jpg"
+                     alt="Student career and placement"
+                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=85';">
+            </div>
+            <div class="portal-card-content">
+                <div class="portal-icon">
+                    <i class="ri-graduation-cap-line"></i>
+                </div>
+                <h3>Student</h3>
+                <p>
+                    Discover your potential, enhance your skills,
+                    identify areas for growth, and move closer
+                    to your dream career.
+                </p>
+                <a href="/student/login" class="portal-link">
+                    Student Login <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- COMPANY -->
+        <div class="portal-card">
+            <div class="portal-image">
+                <img src="company-placement-hero.jpg"
+                     alt="Company hiring and recruitment"
+                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=85';">
+            </div>
+            <div class="portal-card-content">
+                <div class="portal-icon">
+                    <i class="ri-building-line"></i>
+                </div>
+                <h3>Company</h3>
+                <p>
+                    Connect with talented students, explore their
+                    capabilities, and discover candidates who
+                    match your requirements.
+                </p>
+                <a href="/company/login" class="portal-link">
+                    Company Login <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- PLACEMENT OFFICER -->
+        <div class="portal-card">
+            <div class="portal-image">
+                <img src="admin-placement-hero.jpg"
+                     alt="Placement officer administration"
+                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=85';">
+            </div>
+            <div class="portal-card-content">
+                <div class="portal-icon">
+                    <i class="ri-user-star-line"></i>
+                </div>
+                <h3>Placement Officer</h3>
+                <p>
+                    Manage student progress, monitor career readiness,
+                    and support students in finding suitable
+                    career opportunities.
+                </p>
+                <a href="/admin/login" class="portal-link">
+                    Officer Login <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="about" id="about">
+
+    <div class="about-container">
+
+        <div class="about-content">
+            <div class="section-heading" style="text-align:left; margin-bottom:20px;">
+                <span>About SMARTS</span>
+            </div>
+
+            <h2>
+                Your Growth Today.
+                <span>Your Success Tomorrow.</span>
+            </h2>
+
+            <p>
+                Every career journey begins with a single step.
+                SMARTS brings students, companies, and placement
+                officers together in one platform to make that
+                journey more meaningful.
+            </p>
+
+            <p>
+                Whether you are discovering your strengths,
+                looking for opportunities, or connecting with
+                emerging talent, SMARTS helps you move forward
+                with confidence.
+            </p>
+
+            <a href="#portals" class="btn btn-primary">
+                Start Your Journey <i class="ri-arrow-right-line"></i>
+            </a>
+        </div>
+
+        <div class="about-features">
+
+            <div class="feature">
+                <i class="ri-lightbulb-line"></i>
+                <div>
+                    <h4>Discover Your Potential</h4>
+                    <p>Understand your strengths and abilities.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <i class="ri-bar-chart-grouped-line"></i>
+                <div>
+                    <h4>Enhance Your Skills</h4>
+                    <p>Identify opportunities for continuous growth.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <i class="ri-briefcase-line"></i>
+                <div>
+                    <h4>Explore Opportunities</h4>
+                    <p>Move closer to your career aspirations.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <i class="ri-team-line"></i>
+                <div>
+                    <h4>Connect and Grow</h4>
+                    <p>Bring students and companies together.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <h3>SMARTS.</h3>
+
+    <p>
+        Every step counts. Every skill matters.
+        Every opportunity brings you closer to success.
     </p>
 
-    <div class="portals-grid">
-        <!-- 1. STUDENT PORTAL -->
-        <div class="portal-card" onclick="location.href='student-login.html'">
-            <div>
-                <div class="portal-icon">🎓</div>
-                <h3>Student Portal</h3>
-                <p>View corporate JDs, take AI-analyzed skill assessments, and access custom training/counselling tracks[cite: 7].</p>
-            </div>
-            <button class="portal-action-btn">Enter Portal &rarr;</button>
-        </div>
-
-        <!-- 2. HIRING / COMPANY PORTAL -->
-        <div class="portal-card" onclick="location.href='company-login.html'">
-            <div>
-                <div class="portal-icon">💼</div>
-                <h3>Hiring Partner</h3>
-                <p>Deposit manpower requirements, post skill tests, evaluate candidates, and engage top talent[cite: 7].</p>
-            </div>
-            <button class="portal-action-btn">Enter Portal &rarr;</button>
-        </div>
-
-        <!-- 3. PLACEMENT OFFICER PORTAL -->
-        <div class="portal-card" onclick="location.href='admin-login.html'">
-            <div>
-                <div class="portal-icon">🛡️</div>
-                <h3>Placement Officer</h3>
-                <p>Track student performance reports, bridge identified skill gaps, and oversee campus placement drives[cite: 7].</p>
-            </div>
-            <button class="portal-action-btn">Enter Portal &rarr;</button>
-        </div>
+    <div class="footer-social">
+        <a href="#home" aria-label="Home"><i class="ri-home-line"></i></a>
+        <a href="#portals" aria-label="Login"><i class="ri-login-box-line"></i></a>
+        <a href="#about" aria-label="About"><i class="ri-information-line"></i></a>
     </div>
-</div>
+
+    <div class="copyright">
+        <p>© 2026 SMARTS. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- SCROLL TO TOP -->
+<a href="#home" class="scroll-top" id="scroll-top">
+    <i class="ri-arrow-up-line"></i>
+</a>
+
+<!-- LIBRARIES -->
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.js"></script>
+
+<script>
+    // TYPED HERO TEXT
+    const typed = new Typed('.typing', {
+        strings: [
+            'Career Move.',
+            'Future Goal.',
+            'Dream Opportunity.',
+            'Next Achievement.',
+            'New Beginning.'
+        ],
+        typeSpeed: 65,
+        backSpeed: 35,
+        backDelay: 1500,
+        loop: true
+    });
+
+    // MOBILE NAVIGATION
+    const menuIcon = document.querySelector('#menu-icon');
+    const navbar = document.querySelector('#navbar');
+
+    menuIcon.onclick = () => {
+        navbar.classList.toggle('open');
+
+        menuIcon.classList.toggle('ri-menu-3-line');
+        menuIcon.classList.toggle('ri-close-line');
+    };
+
+    // CLOSE MOBILE MENU AFTER CLICKING A LINK
+    document.querySelectorAll('.navbar a').forEach(link => {
+        link.addEventListener('click', () => {
+            navbar.classList.remove('open');
+            menuIcon.classList.add('ri-menu-3-line');
+            menuIcon.classList.remove('ri-close-line');
+        });
+    });
+
+    // HEADER SHADOW AND SCROLL TOP
+    const header = document.querySelector('#header');
+    const scrollTop = document.querySelector('#scroll-top');
+
+    window.addEventListener('scroll', () => {
+        header.classList.toggle('sticky', window.scrollY > 50);
+        scrollTop.classList.toggle('show', window.scrollY > 350);
+    });
+
+    // ACTIVE NAVIGATION
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.navbar a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 150;
+            const sectionHeight = section.offsetHeight;
+
+            if (
+                window.scrollY >= sectionTop &&
+                window.scrollY < sectionTop + sectionHeight
+            ) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+    // SCROLL REVEAL ANIMATIONS
+    ScrollReveal({
+        distance: '60px',
+        duration: 1200,
+        delay: 100,
+        reset: false
+    });
+
+    ScrollReveal().reveal('.hero-content', {
+        origin: 'bottom'
+    });
+
+    ScrollReveal().reveal('.section-heading', {
+        origin: 'top'
+    });
+
+    ScrollReveal().reveal('.portal-card', {
+        origin: 'bottom',
+        interval: 180
+    });
+
+    ScrollReveal().reveal('.about-content', {
+        origin: 'left'
+    });
+
+    ScrollReveal().reveal('.about-features', {
+        origin: 'right'
+    });
+</script>
 
 </body>
 </html>
