@@ -21,4 +21,9 @@ public class PageController {
     public String adminLogin() {
         return "forward:/admin-login.html";
     }
+
+    @GetMapping("/company/dashboard")
+    public String employerDashboard() {
+        return "forward:/employer-dashboard.html";
+    }
 }

@@ -264,7 +264,7 @@
                 <button type="submit" class="login-btn">Login to Workspace</button>
 
                 <div class="back-link">
-                    <a href="index.html">&larr; Back to Portal Hub</a>
+                    <a href="/">&larr; Back to Portal Hub</a>
                 </div>
 
                 <div id="message" class="message"></div>
@@ -296,7 +296,7 @@
                 sessionStorage.setItem("employerEmail", email);
                 if (data.companyName) sessionStorage.setItem("companyName", data.companyName);
                 if (data.employerId) sessionStorage.setItem("employerId", data.employerId);
-                window.location.href = data.nextPage || "employer-dashboard.html";
+                window.location.href = "/company/dashboard";
             } else {
                 message.textContent = data.message || "Invalid credentials.";
             }

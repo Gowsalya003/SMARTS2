@@ -138,7 +138,7 @@ public class EmployerController {
                                 "Login successful",
 
                                 "nextPage",
-                                "employer-dashboard.html",
+                                "/company/dashboard",
 
                                 // Keeps sending back employerId so frontend profile routes don't break
                                 "employerId",
